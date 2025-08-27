@@ -1,5 +1,6 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI; // Slider के लिए
 
 public class GameManager : MonoBehaviour
@@ -25,9 +26,16 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance;
 
+    public GameObject gameOverPanel;
+    public Text gameOverText;
+
+
     private void Awake()
     {
         instance = this;
+
+        if (gameOverPanel != null)
+            gameOverPanel.SetActive(false);
     }
     void Start()
     {
@@ -40,21 +48,23 @@ public class GameManager : MonoBehaviour
         GameObject fisherman = Instantiate(fishermanPrefab, new Vector3(0f, 1.75f, 0f), Quaternion.identity);
         fisherman.name = "Fisherman";
 
+        // Worm calculation
+        int fishCount = totalPlayers - 1;
+        fishermanWorms = fishCount * baseWormMultiplier;
+        Debug.Log("Fisherman Worms: " + fishermanWorms);
+
         // Assign castingMeter to FishermanController
         FishermanController fc = fisherman.GetComponent<FishermanController>();
         if (fc != null)
         {
             fc.castingMeter = castingMeter;
+            fc.worms = fishermanWorms;
         }
         else
         {
             Debug.LogWarning("FishermanController not found on FishermanPrefab!");
         }
 
-        // Worm calculation
-        int fishCount = totalPlayers - 1;
-        fishermanWorms = fishCount * baseWormMultiplier;
-        Debug.Log("Fisherman Worms: " + fishermanWorms);
 
 
         // Spawn Fish
@@ -70,5 +80,24 @@ public class GameManager : MonoBehaviour
         }
 
         Debug.Log("Fish Spawned: " + fishes.Count);
+    }
+
+    public void ShowGameOver(string message)
+    {
+        if (gameOverPanel != null)
+        {
+            gameOverPanel.SetActive(true);
+        }
+
+        if (gameOverText != null)
+        {
+            gameOverText.text = message;
+        }
+    }
+
+    // Restart Button function
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

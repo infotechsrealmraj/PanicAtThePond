@@ -7,14 +7,26 @@ public class Hook : MonoBehaviour
     public Transform rodTip;
     public LineRenderer lineRenderer;
     public float dropSpeed = 3f;
-    public float dropDistance = 10f;
 
-    public GameObject wormPrefab;      // Assign Worm prefab in inspector
-    public Transform wormParent;       // Assign WormParent transform in inspector
-    private GameObject wormInstance;   // Instance of worm
+    public GameObject wormPrefab;
+    public Transform wormParent;
+    private GameObject wormInstance;
 
     private bool hasWorm = false;
     private bool isReturning = false;
+
+    public float minDistance = 2f;   // Minimum hook drop distance
+    public float maxDistance = 15f;  // Maximum hook drop distance
+
+    public static Hook instance;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+    }
 
     void Start()
     {
@@ -37,28 +49,31 @@ public class Hook : MonoBehaviour
         lineRenderer.SetPosition(0, rodTip.position);
         lineRenderer.SetPosition(1, transform.position);
 
-        if (Input.GetKeyDown(KeyCode.Space) && !isReturning)
+        if (Input.GetMouseButtonDown(1) && !isReturning) // 1 = right mouse button
         {
-            StartCoroutine(ReturnToRod());
+            LoadReturnToRod();
         }
+
     }
 
-    // Worm dynamically generate in WormParent
     public void AttachWorm()
     {
         if (wormPrefab != null && !hasWorm && wormParent != null)
         {
             wormInstance = Instantiate(wormPrefab, wormParent.position, Quaternion.identity, wormParent);
-            wormInstance.transform.localPosition = Vector3.zero; // center in WormParent
+            wormInstance.transform.localPosition = Vector3.zero;
+            wormInstance.GetComponent<PolygonCollider2D>().enabled = false;
             hasWorm = true;
-            Debug.Log("Worm dynamically attached to HookParent");
         }
     }
 
-    public void LaunchDown()
+    // Launch hook with variable distance
+    public void LaunchDownWithDistance(float distance)
     {
-        StartCoroutine(MoveDown(dropDistance));
+        distance = Mathf.Clamp(distance, minDistance, maxDistance);
+        StartCoroutine(MoveDown(distance));
     }
+
 
     private IEnumerator MoveDown(float distance)
     {
@@ -68,27 +83,51 @@ public class Hook : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, target, dropSpeed * Time.deltaTime);
             yield return null;
         }
+
+        wormInstance.GetComponent<PolygonCollider2D>().enabled = true;
+
+    }
+
+    public void LoadReturnToRod()
+    {
+        StartCoroutine(ReturnToRod());
+
     }
 
     private IEnumerator ReturnToRod()
     {
+        wormInstance.GetComponent<PolygonCollider2D>().enabled = false;
+
         isReturning = true;
         Vector3 target = rodTip.position;
+
+        // Detach worm from hook so it stays in scene
+        if (wormInstance != null)
+        {
+            wormInstance.transform.parent = null; // worm ko hook se alag kar do
+            wormInstance = null; // reference clear
+            hasWorm = false;
+        }
+
         while (Vector3.Distance(transform.position, target) > 0.05f)
         {
             transform.position = Vector3.MoveTowards(transform.position, target, dropSpeed * 1.5f * Time.deltaTime);
             yield return null;
         }
 
-        Destroy(gameObject); // hook + worm destroyed together
+        Destroy(gameObject); // hook destroy
     }
 
+
+    // ✅ Updated to avoid obsolete warning
     void OnDestroy()
     {
-        FishermanController fc = FindObjectOfType<FishermanController>();
+        FishermanController fc = Object.FindFirstObjectByType<FishermanController>();
         if (fc != null)
         {
-            fc.ClearHookReference(gameObject);
+            fc.ClearHookReference(this.gameObject);
+            fc.CheckWorms();
+
         }
     }
 }

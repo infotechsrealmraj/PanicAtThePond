@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using Unity.VisualScripting;
+using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
 public class FishermanController : MonoBehaviour
 {
@@ -17,9 +18,10 @@ public class FishermanController : MonoBehaviour
     public KeyCode castKey2 = KeyCode.V;
     public Slider castingMeter;       // UI Slider (0-1)
     public float meterSpeed = 2f;
+    public float maxCastDistance = 10f; // max distance hook can go
 
     [Header("Worms")]
-    public int worms = 10;
+    internal int worms ;
 
     [Header("Hook")]
     public GameObject hookPrefab;
@@ -29,6 +31,7 @@ public class FishermanController : MonoBehaviour
 
     [HideInInspector] public GameObject leftHook = null;
     [HideInInspector] public GameObject rightHook = null;
+
 
     void Start()
     {
@@ -42,16 +45,26 @@ public class FishermanController : MonoBehaviour
         HandleMovement();
         HandleRodSelection();
         HandleCasting();
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            // Here you can check if a hook has a fish attached
+            // For now, just print a log
+            Debug.Log("Tug-of-war action! Space pressed while fish is hooked.");
+        }
     }
 
     void HandleMovement()
     {
-        // Boat move allowed only if no hook exists
         if (leftHook == null && rightHook == null)
         {
             float moveInput = Input.GetAxisRaw("Horizontal");
             Vector3 move = new Vector3(moveInput * moveSpeed * Time.deltaTime, 0, 0);
             transform.position += move;
+
+            Vector3 clampedPos = transform.position;
+            transform.position = clampedPos;
+
         }
     }
 
@@ -65,6 +78,7 @@ public class FishermanController : MonoBehaviour
 
     void HandleCasting()
     {
+        // X + V held down → start casting meter
         if (!isCasting && Input.GetKey(castKey1) && Input.GetKey(castKey2))
         {
             if ((currentRod == leftRod && leftHook != null) ||
@@ -78,9 +92,13 @@ public class FishermanController : MonoBehaviour
             StartCoroutine(CastMeterRoutine());
         }
 
-        if (isCasting && (!Input.GetKey(castKey1) || !Input.GetKey(castKey2)))
+        // Release → cast hook with meter value
+        if (worms > 0)
         {
-            ReleaseCast();
+            if (isCasting && (!Input.GetKey(castKey1) || !Input.GetKey(castKey2)))
+            {
+                ReleaseCast();
+            }
         }
     }
 
@@ -117,11 +135,12 @@ public class FishermanController : MonoBehaviour
             {
                 hookScript.rodTip = currentRod;
 
-                // ✅ Automatic worm attach
+                // Automatic worm attach
                 hookScript.AttachWorm();
 
-                // Launch hook down
-                hookScript.LaunchDown();
+                // Launch hook based on meter value
+                float castDistance = castingMeter.value * maxCastDistance;
+                hookScript.LaunchDownWithDistance(castDistance);
             }
 
             // Track hook per rod
@@ -136,33 +155,28 @@ public class FishermanController : MonoBehaviour
         }
 
         castingMeter.value = 0;
-        StartCoroutine(FishInteractionRoutine());
     }
-
-    IEnumerator FishInteractionRoutine()
-    {
-        Debug.Log("Waiting for Fish Interaction...");
-        yield return new WaitForSeconds(2f);
-
-        int randomCase = Random.Range(0, 3);
-        switch (randomCase)
-        {
-            case 0:
-                Debug.Log("Case A: Fish bites → Struggle Phase");
-                break;
-            case 1:
-                Debug.Log("Case B: Fish puts Junk → worm wasted");
-                break;
-            case 2:
-                Debug.Log("Case C: No interaction → line returns");
-                break;
-        }
-    }
-
-    // Called by Hook on destroy
     public void ClearHookReference(GameObject hook)
     {
         if (hook == leftHook) leftHook = null;
         if (hook == rightHook) rightHook = null;
     }
+
+    // Check worms and print lose message
+    public void CheckWorms()
+    {
+        if (worms <= 0)
+        {
+            if (GameManager.instance != null && GameManager.instance.gameOverText != null)
+            {
+                GameManager.instance.ShowGameOver("Fisherman Lose!\nFishes Win!");
+            }
+
+            // Optional: stop all fishing actions
+            leftHook = null;
+            rightHook = null;
+            isCasting = false;
+        }
+    }
+
 }

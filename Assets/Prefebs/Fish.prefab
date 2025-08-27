@@ -105,9 +105,9 @@ MonoBehaviour:
   hunger: 100
   speed: 5
   minBounds: {x: -8, y: -4}
-  maxBounds: {x: 8, y: 4}
-  originalScaleX: 0.4
-  originalScaleY: 0.4
+  maxBounds: {x: 8, y: 1}
+  canMove: 1
+  floatSpeed: 2
   Autospeed: 3
 --- !u!50 &8162640615994465839
 Rigidbody2D:
@@ -124,7 +124,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2

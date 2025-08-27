@@ -11,6 +11,8 @@ public class HungerSystem : MonoBehaviour
 
     private float currentHunger;
 
+    public bool canDecrease;
+
     void Awake()
     {
         instance = this;
@@ -18,6 +20,7 @@ public class HungerSystem : MonoBehaviour
 
     void Start()
     {
+        canDecrease = true;
         currentHunger = maxHunger;
         hungerBar.maxValue = maxHunger;
         hungerBar.value = currentHunger;
@@ -25,6 +28,8 @@ public class HungerSystem : MonoBehaviour
 
     void Update()
     {
+        if (!canDecrease) return;
+
         if (GameManager.instance != null)
         {
             currentHunger -= hungerDecreaseSpeed * Time.deltaTime;

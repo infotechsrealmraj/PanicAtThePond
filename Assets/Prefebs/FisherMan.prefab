@@ -109,10 +109,12 @@ MonoBehaviour:
   castKey2: 118
   castingMeter: {fileID: 0}
   meterSpeed: 2
-  worms: 10
+  maxCastDistance: 10
   hookPrefab: {fileID: 2825920470062649857, guid: 7425abcbde3b9664da206dab5c02a51a, type: 3}
   leftHook: {fileID: 0}
   rightHook: {fileID: 0}
+  minBounds: {x: 8, y: 0}
+  maxBounds: {x: -8, y: 0}
 --- !u!1 &7019689914220573200
 GameObject:
   m_ObjectHideFlags: 0

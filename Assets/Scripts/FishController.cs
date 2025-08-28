@@ -156,6 +156,7 @@ public class FishController : MonoBehaviour
             HungerSystem.instance.canDecrease = canMove = true;
             HungerSystem.instance.AddHunger(75f);
             carriedJunk.transform.SetParent(wormParent);
+            carriedJunk.GetComponent<PolygonCollider2D>().enabled = false;
             carriedJunk.transform.localPosition = Vector3.zero;
             Debug.Log("Fish dropped junk on hook! Fisherman pranked!");
             Hook.instance.LoadReturnToRod();

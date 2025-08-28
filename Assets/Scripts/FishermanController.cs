@@ -26,13 +26,24 @@ public class FishermanController : MonoBehaviour
     [Header("Hook")]
     public GameObject hookPrefab;
 
-    private bool isCasting = false;
+    internal bool isCasting = false;
+    internal bool isCanMove = true;
     private bool meterIncreasing = true;
 
     [HideInInspector] public GameObject leftHook = null;
     [HideInInspector] public GameObject rightHook = null;
 
+    [Header("Horizontal Bounds")]
+    public float minX = -8f;
+    public float maxX = 8f;
 
+    public static FishermanController instance;
+
+    private void Awake()
+    {
+        if (instance == null)
+            instance = this;
+    }
     void Start()
     {
         currentRod = leftRod;
@@ -42,7 +53,10 @@ public class FishermanController : MonoBehaviour
 
     void Update()
     {
-        HandleMovement();
+        if(isCanMove)
+        {
+            HandleMovement();
+        }
         HandleRodSelection();
         HandleCasting();
 
@@ -56,15 +70,16 @@ public class FishermanController : MonoBehaviour
 
     void HandleMovement()
     {
-        if (leftHook == null && rightHook == null)
+        if (leftHook == null && rightHook == null && !isCasting)
         {
             float moveInput = Input.GetAxisRaw("Horizontal");
             Vector3 move = new Vector3(moveInput * moveSpeed * Time.deltaTime, 0, 0);
             transform.position += move;
 
+            // Clamp only X position
             Vector3 clampedPos = transform.position;
+            clampedPos.x = Mathf.Clamp(clampedPos.x, minX, maxX);
             transform.position = clampedPos;
-
         }
     }
 
@@ -81,8 +96,7 @@ public class FishermanController : MonoBehaviour
         // X + V held down → start casting meter
         if (!isCasting && Input.GetKey(castKey1) && Input.GetKey(castKey2))
         {
-            if ((currentRod == leftRod && leftHook != null) ||
-                (currentRod == rightRod && rightHook != null))
+            if (( leftHook != null) || (rightHook != null))
             {
                 Debug.Log("Rod already has a hook!");
                 return;
@@ -171,6 +185,7 @@ public class FishermanController : MonoBehaviour
             {
                 GameManager.instance.ShowGameOver("Fisherman Lose!\nFishes Win!");
             }
+           WormSpawner.instance.canSpawn =  FishermanController.instance.isCanMove = HungerSystem.instance.canDecrease = FishController.instance.canMove = false;
 
             // Optional: stop all fishing actions
             leftHook = null;

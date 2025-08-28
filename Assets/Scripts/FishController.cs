@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
 public class FishController : MonoBehaviour
@@ -22,6 +22,8 @@ public class FishController : MonoBehaviour
     private bool isDead = false;
     public float floatSpeed = 2f;
 
+    public Transform junkHolder;   
+    private GameObject carriedJunk;
 
     // Event for fish death
     public static event System.Action<FishController> OnFishDied;
@@ -122,13 +124,50 @@ public class FishController : MonoBehaviour
         if (other.CompareTag("Worm"))
         {
             other.gameObject.GetComponent<PolygonCollider2D>().enabled = false;
+
+            if (carriedJunk != null)
+            {
+                DropJunkToHook(other.gameObject);
+                return;
+            }
             MiniGameManager.instance.StartMiniGame();
-            MiniGameManager.instance.catcdFish = other.gameObject;
+            MiniGameManager.instance.catchedFish = other.gameObject;
         }
         if (other.CompareTag("GoldTrout"))
         {
             HungerSystem.instance.AddHunger(25f); 
             Destroy(other.gameObject);
         }
+
+        if (other.CompareTag("Junk") && carriedJunk == null)
+        {
+            carriedJunk = other.gameObject;
+            carriedJunk.transform.SetParent(junkHolder);
+            carriedJunk.transform.localPosition = Vector3.zero;
+        }
+    }
+
+    void DropJunkToHook(GameObject Fish)
+    {
+        Transform wormParent = Hook.instance.wormParent;
+
+        if (wormParent != null)
+        {
+            HungerSystem.instance.canDecrease = canMove = true;
+            HungerSystem.instance.AddHunger(75f);
+            carriedJunk.transform.SetParent(wormParent);
+            carriedJunk.transform.localPosition = Vector3.zero;
+            Debug.Log("Fish dropped junk on hook! Fisherman pranked!");
+            Hook.instance.LoadReturnToRod();
+            Destroy(Fish);
+        }
+        else
+        {
+            Debug.LogWarning("wormParent not found inside Hook!");
+        }
+
+        Hook.instance.LoadReturnToRod();
+
+        carriedJunk = null;
     }
 }

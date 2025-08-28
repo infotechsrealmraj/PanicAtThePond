@@ -39,7 +39,8 @@ public class HungerSystem : MonoBehaviour
 
             if (currentHunger <= 0)
             {
-                WormSpawner.instence.StopSpawning();
+                WormSpawner.instance.StopSpawning();
+                JunkSpawner.instance.StopSpawning();
             }
         }
     }

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI; // Slider के लिए
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -64,8 +64,6 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogWarning("FishermanController not found on FishermanPrefab!");
         }
-
-
 
         // Spawn Fish
         for (int i = 0; i < 1; i++)

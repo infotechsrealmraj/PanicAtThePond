@@ -8,16 +8,16 @@ public class WormSpawner : MonoBehaviour
     public float xRange = 8f;
     public float yRange = 4f;
 
-    private bool canSpawn = true;
+    internal bool canSpawn = true;
 
-    public static WormSpawner instence;
+    public static WormSpawner instance;
 
 
     private void Awake()
     {
-        if (instence == null)
+        if (instance == null)
         {
-            instence = this;
+            instance = this;
         }
     }
 

@@ -96,7 +96,8 @@ public class Hook : MonoBehaviour
 
     private IEnumerator ReturnToRod()
     {
-        wormInstance.GetComponent<PolygonCollider2D>().enabled = false;
+        if (wormInstance != null)
+            wormInstance.GetComponent<PolygonCollider2D>().enabled = false;
 
         isReturning = true;
         Vector3 target = rodTip.position;

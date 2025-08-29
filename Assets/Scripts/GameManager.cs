@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -19,6 +20,8 @@ public class GameManager : MonoBehaviour
 
     [Header("Runtime Info")]
     public int fishermanWorms;
+    public int maxWorms;
+
     public List<GameObject> fishes = new List<GameObject>();
 
     [Header("UI")]
@@ -29,6 +32,14 @@ public class GameManager : MonoBehaviour
     public GameObject gameOverPanel;
     public Text gameOverText;
 
+    [Header("Bucket Sprites")]
+    public Sprite fullBucket;
+    public Sprite halfBucket;
+    public Sprite emptyBucket;
+
+    [Header("UI References")]
+    public Image bucketImage;   // assign bucket Image (UI Image)
+    public Text wormCountText;
 
     private void Awake()
     {
@@ -42,31 +53,32 @@ public class GameManager : MonoBehaviour
         SetupGame();
     }
 
-    void SetupGame()
+    public void UpdateUI(int currunt_Warms)
     {
-        // Spawn Fisherman
-        GameObject fisherman = Instantiate(fishermanPrefab, new Vector3(0f, 1.75f, 0f), Quaternion.identity);
-        fisherman.name = "Fisherman";
+        // Text
+        wormCountText.text = currunt_Warms.ToString();
 
-        // Worm calculation
-        int fishCount = totalPlayers - 1;
-        fishermanWorms = fishCount * baseWormMultiplier;
-        Debug.Log("Fisherman Worms: " + fishermanWorms);
+        // Percentage
+        float percentage = (float)currunt_Warms / maxWorms;
 
-        // Assign castingMeter to FishermanController
-        FishermanController fc = fisherman.GetComponent<FishermanController>();
-        if (fc != null)
+        if (percentage >= 0.5f)
         {
-            fc.castingMeter = castingMeter;
-            fc.worms = fishermanWorms;
+            bucketImage.sprite = fullBucket;
+        }
+        else if (percentage > 0.25f)
+        {
+            bucketImage.sprite = halfBucket;
         }
         else
         {
-            Debug.LogWarning("FishermanController not found on FishermanPrefab!");
+            bucketImage.sprite = emptyBucket;
         }
+    }
 
+    void SetupGame()
+    {
         // Spawn Fish
-        for (int i = 0; i < 1; i++)
+        for (int i = 0; i < 7; i++)
         {
             float x = Random.Range(minBounds.x, maxBounds.x);
             float y = Random.Range(minBounds.y, maxBounds.y);
@@ -78,6 +90,32 @@ public class GameManager : MonoBehaviour
         }
 
         Debug.Log("Fish Spawned: " + fishes.Count);
+    }
+
+    public void SpawnFisherman()
+    {
+        // Spawn Fisherman
+        GameObject fisherman = Instantiate(fishermanPrefab, new Vector3(0f, 1.75f, 0f), Quaternion.identity);
+        fisherman.name = "Fisherman";
+
+        // Worm calculation
+        int fishCount = totalPlayers - 1;
+        fishermanWorms = fishCount * baseWormMultiplier;
+        maxWorms = fishermanWorms;
+        Debug.Log("Fisherman Worms: " + fishermanWorms);
+
+        // Assign castingMeter to FishermanController
+        FishermanController fc = fisherman.GetComponent<FishermanController>();
+        if (fc != null)
+        {
+            fc.castingMeter = castingMeter;
+            fc.worms = fishermanWorms;
+            UpdateUI(fc.worms);
+        }
+        else
+        {
+            Debug.LogWarning("FishermanController not found on FishermanPrefab!");
+        }
     }
 
     public void ShowGameOver(string message)

@@ -39,6 +39,7 @@ public class FishermanController : MonoBehaviour
 
     public static FishermanController instance;
 
+   
     private void Awake()
     {
         if (instance == null)
@@ -164,6 +165,7 @@ public class FishermanController : MonoBehaviour
             if (worms > 0)
             {
                 worms--;
+                GameManager.instance.UpdateUI(worms);
                 Debug.Log("Worm used! Remaining: " + worms);
             }
         }

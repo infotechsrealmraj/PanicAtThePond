@@ -9,6 +9,7 @@ TagManager:
   - Worm
   - GoldTrout
   - Junk
+  - Worm2
   layers:
   - Default
   - TransparentFX

@@ -24,9 +24,21 @@ public class WormSpawner : MonoBehaviour
     void Start()
     {
         InvokeRepeating("SpawnWorm", 1f, spawnInterval);
+        Invoke("SpawnGoldWorm", Random.Range(5f,10f));
     }
 
     void SpawnWorm()
+    {
+        if (!canSpawn) return;
+
+        float x = Random.Range(-xRange, xRange);
+        float y = Random.Range(-yRange, 1);
+        Vector2 pos = new Vector2(x, y);
+
+            Instantiate(wormPrefab, pos, Quaternion.identity);
+    }
+
+    void SpawnGoldWorm()
     {
         if (!canSpawn) return;
 
@@ -46,6 +58,12 @@ public class WormSpawner : MonoBehaviour
     {
         GameObject[] worms = GameObject.FindGameObjectsWithTag("Worm");
         foreach (GameObject worm in worms)
+        {
+            Destroy(worm);
+        }
+
+        GameObject[] worms2 = GameObject.FindGameObjectsWithTag("Worm2");
+        foreach (GameObject worm in worms2)
         {
             Destroy(worm);
         }

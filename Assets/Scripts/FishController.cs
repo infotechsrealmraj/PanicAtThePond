@@ -133,10 +133,21 @@ public class FishController : MonoBehaviour
             MiniGameManager.instance.StartMiniGame();
             MiniGameManager.instance.catchedFish = other.gameObject;
         }
+
         if (other.CompareTag("GoldTrout"))
         {
-            HungerSystem.instance.AddHunger(25f); 
+            // HungerSystem.instance.AddHunger(25f); 
+            GameManager.instance.SpawnFisherman();
             Destroy(other.gameObject);
+            Destroy(this.gameObject);
+
+        }
+
+        if (other.CompareTag("Worm2"))
+        {
+             HungerSystem.instance.AddHunger(25f); 
+            Destroy(other.gameObject);
+
         }
 
         if (other.CompareTag("Junk") && carriedJunk == null)

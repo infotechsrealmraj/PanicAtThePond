@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -50,7 +49,7 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
-        SetupGame();
+       // SetupGame();
     }
 
     public void UpdateUI(int currunt_Warms)

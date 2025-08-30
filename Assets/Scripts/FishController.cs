@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using FishNet.Object;
 using System.Collections;
+using UnityEngine;
 
-public class FishController : MonoBehaviour
+public class FishController : NetworkBehaviour
 {
     [Header("Fish Stats")]
     public int hunger = 100;
@@ -45,6 +46,11 @@ public class FishController : MonoBehaviour
 
     void Update()
     {
+
+        if (!IsOwner)
+            return;
+
+
         if (!canMove)
         {
             rb.linearVelocity = Vector2.zero;

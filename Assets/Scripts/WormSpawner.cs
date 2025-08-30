@@ -24,7 +24,7 @@ public class WormSpawner : MonoBehaviour
     void Start()
     {
         InvokeRepeating("SpawnWorm", 1f, spawnInterval);
-        Invoke("SpawnGoldWorm", Random.Range(5f,10f));
+       // Invoke("SpawnGoldWorm", Random.Range(5f,10f));
     }
 
     void SpawnWorm()

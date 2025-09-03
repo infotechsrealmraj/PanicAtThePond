@@ -1,7 +1,8 @@
-using NUnit.Framework;
-using UnityEngine;
+﻿using UnityEngine;
+using FishNet.Object;
+using FishNet.Connection;
 
-public class WormSpawner : MonoBehaviour
+public class WormSpawner : NetworkBehaviour
 {
     public GameObject wormPrefab, goldWormPrefab;
     public float spawnInterval = 3f;
@@ -11,7 +12,6 @@ public class WormSpawner : MonoBehaviour
     internal bool canSpawn = true;
 
     public static WormSpawner instance;
-
 
     private void Awake()
     {
@@ -23,30 +23,39 @@ public class WormSpawner : MonoBehaviour
 
     void Start()
     {
-        InvokeRepeating("SpawnWorm", 1f, spawnInterval);
-       // Invoke("SpawnGoldWorm", Random.Range(5f,10f));
+        Debug.Log($"[WormSpawner] IsServer={IsServer}, IsClient={IsClient}, IsHost={IsHost}");
+
+        if (IsServer)
+        {
+            Debug.Log("I M Server");
+            InvokeRepeating("SpawnWorm", 1f, spawnInterval);
+            Invoke("SpawnGoldWorm", Random.Range(5f, 10f));
+        }
     }
 
     void SpawnWorm()
     {
-        if (!canSpawn) return;
 
         float x = Random.Range(-xRange, xRange);
-        float y = Random.Range(-yRange, 1);
+        float y = Random.Range(-yRange, 0);
         Vector2 pos = new Vector2(x, y);
 
-            Instantiate(wormPrefab, pos, Quaternion.identity);
+        GameObject worm = Instantiate(wormPrefab, pos, Quaternion.identity);
+        if (IsServer)
+            Spawn(worm); // यह NetworkBehaviour की built-in method है (ServerManager.Spawn का shorthand)
     }
+
 
     void SpawnGoldWorm()
     {
         if (!canSpawn) return;
 
         float x = Random.Range(-xRange, xRange);
-        float y = Random.Range(-yRange, 1);
+        float y = Random.Range(-yRange, 0);
         Vector2 pos = new Vector2(x, y);
 
-            Instantiate(goldWormPrefab, pos, Quaternion.identity);
+        GameObject goldWorm = Instantiate(goldWormPrefab, pos, Quaternion.identity);
+        Spawn(goldWorm);
     }
 
     public void StopSpawning()
@@ -73,6 +82,7 @@ public class WormSpawner : MonoBehaviour
         {
             Destroy(trout);
         }
-
     }
+
+
 }

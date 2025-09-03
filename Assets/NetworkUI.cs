@@ -136,50 +136,16 @@ public class NetworkUI : MonoBehaviour
             playSceneLoaded = true;
 
             // 🆚 सभी clients को Play scene में load करें
-            networkManager.SceneManager.LoadGlobalScenes(new SceneLoadData("Play"));
+            SceneLoadData sld = new SceneLoadData("Play")
+            {
+                ReplaceScenes = ReplaceOption.All // This unloads the current scene(s) first
+            };
 
+            networkManager.SceneManager.LoadGlobalScenes(sld);
             if (waitingPanel != null) waitingPanel.SetActive(false);
         }
     }
 
-    /*private void TrySpawnPlayers()
-    {
-        if (playersSpawned) return;
-
-        Debug.Log("Attempting to spawn players for all connections");
-
-        if (playerPrefab == null)
-        {
-            Debug.LogError("Player prefab not assigned in NetworkUI.");
-            return;
-        }
-
-        Debug.Log("✅ All players in Play scene. Spawning players...");
-
-        int i = 0;
-        foreach (var kv in networkManager.ServerManager.Clients)
-        {
-            NetworkConnection conn = kv.Value;
-
-            Vector3 pos = Vector3.zero;
-            Quaternion rot = Quaternion.identity;
-            if (spawnPoints != null && spawnPoints.Length > 0)
-            {
-                Transform sp = spawnPoints[i % spawnPoints.Length];
-                pos = sp.position;
-                rot = sp.rotation;
-                i++;
-            }
-
-            GameObject go = Instantiate(playerPrefab, pos, rot);
-            networkManager.ServerManager.Spawn(go, conn);
-
-            Debug.Log($"Spawned player for client {conn.ClientId} at position {pos}");
-        }
-
-        playersSpawned = true;
-        Debug.Log("🎮 All players spawned via ServerManager.Spawn()");
-    }*/
 
     private void TrySpawnPlayers()
     {
@@ -201,9 +167,8 @@ public class NetworkUI : MonoBehaviour
 
             // Random position और rotation generate करें
             Vector3 randomPos = GetRandomSpawnPosition();
-            Quaternion randomRot = Quaternion.Euler(0, UnityEngine.Random.Range(0, 360), 0);
 
-            GameObject go = Instantiate(playerPrefab, randomPos, randomRot);
+            GameObject go = Instantiate(playerPrefab, randomPos, Quaternion.Euler(0, 0, 0));
             networkManager.ServerManager.Spawn(go, conn);
 
             Debug.Log($"Spawned player for client {conn.ClientId} at random position {randomPos}");

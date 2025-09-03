@@ -1,31 +1,37 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using FishNet.Object; // ✅ FishNet networking
+using FishNet.Object.Synchronizing;
 
-public class JunkSpawner : MonoBehaviour
+public class JunkSpawner : NetworkBehaviour
 {
-    public GameObject[] junkPrefabs; 
+    public GameObject[] junkPrefabs;
     public float minSpawnDelay = 8f;   // min wait
-    public float maxSpawnDelay = 12f;   // max wait
+    public float maxSpawnDelay = 12f;  // max wait
     public float xRange = 8f;
     public float yRange = 4f;
 
-    internal bool canSpawn = true;
+    internal bool canSpawn = false;
     public static JunkSpawner instance;
+
+
 
     private List<GameObject> activeJunks = new List<GameObject>(); // track all junks
 
     private void Awake()
     {
         if (instance == null)
-        {
             instance = this;
-        }
     }
 
-    void Start()
+    public override void OnStartServer()
     {
-        StartCoroutine(SpawnLoop());
+        if (IsServer)
+        {
+            base.OnStartServer();
+            StartCoroutine(SpawnLoop());
+        }
     }
 
     IEnumerator SpawnLoop()
@@ -38,8 +44,11 @@ public class JunkSpawner : MonoBehaviour
                 float y = yRange;
                 Vector2 pos = new Vector2(x, y);
 
+                // ✅ Server पर prefab instantiate करो और फिर network पर spawn करो
                 GameObject prefab = junkPrefabs[Random.Range(0, junkPrefabs.Length)];
                 GameObject newJunk = Instantiate(prefab, pos, Quaternion.identity);
+
+                Spawn(newJunk); // FishNet का network spawn
 
                 activeJunks.Add(newJunk);
 
@@ -61,22 +70,22 @@ public class JunkSpawner : MonoBehaviour
     {
         foreach (GameObject junk in activeJunks)
         {
-            if (junk != null) Destroy(junk);
+            if (junk != null)
+                Despawn(junk); // ✅ networked despawn (Destroy की बजाय)
         }
         activeJunks.Clear();
     }
 }
 
 // Helper script
-public class Junk : MonoBehaviour
+public class Junk : NetworkBehaviour
 {
     public System.Action onDestroyed;
 
-    void OnDestroy()
+    public override void OnStopServer()
     {
+        base.OnStopServer();
         if (onDestroyed != null)
-        {
             onDestroyed.Invoke();
-        }
     }
 }

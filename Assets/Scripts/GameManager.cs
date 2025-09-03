@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using FishNet.Object;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -7,7 +9,7 @@ public class GameManager : MonoBehaviour
 {
     [Header("Player Setup")]
     public int totalPlayers = 7;
-    public GameObject fishermanPrefab;
+    public FishermanController fishermanPrefab;
     public GameObject fishPrefab;
 
     [Header("Worm Settings")]
@@ -40,6 +42,7 @@ public class GameManager : MonoBehaviour
     public Image bucketImage;   // assign bucket Image (UI Image)
     public Text wormCountText;
 
+
     private void Awake()
     {
         instance = this;
@@ -49,7 +52,7 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
-       // SetupGame();
+        // SetupGame();
     }
 
     public void UpdateUI(int currunt_Warms)
@@ -91,29 +94,40 @@ public class GameManager : MonoBehaviour
         Debug.Log("Fish Spawned: " + fishes.Count);
     }
 
-    public void SpawnFisherman()
+    public FishermanController fisherman;
+
+    public void LoadMakeFisherMan()
     {
-        // Spawn Fisherman
-        GameObject fisherman = Instantiate(fishermanPrefab, new Vector3(0f, 1.75f, 0f), Quaternion.identity);
-        fisherman.name = "Fisherman";
+        Debug.Log("LoadMakeFisherMan");
+        Invoke(nameof(MakeFisherMan),1f);
+    }
 
-        // Worm calculation
-        int fishCount = totalPlayers - 1;
-        fishermanWorms = fishCount * baseWormMultiplier;
-        maxWorms = fishermanWorms;
-        Debug.Log("Fisherman Worms: " + fishermanWorms);
+    internal void MakeFisherMan()
+    {
+        if (fisherman != null)
+        {
+            fisherman.isfisherMan = true;   
+            HungerSystem.instance.gameObject.SetActive(false);
+            castingMeter.gameObject.SetActive(true);
+            bucketImage.gameObject.SetActive(true);
+            // Worm calculation
+            int fishCount = totalPlayers - 1;
+            fishermanWorms = fishCount * baseWormMultiplier;
+            maxWorms = fishermanWorms;
+            Debug.Log("Fisherman Worms: " + fishermanWorms);
 
-        // Assign castingMeter to FishermanController
-        FishermanController fc = fisherman.GetComponent<FishermanController>();
-        if (fc != null)
-        {
-            fc.castingMeter = castingMeter;
-            fc.worms = fishermanWorms;
-            UpdateUI(fc.worms);
-        }
-        else
-        {
-            Debug.LogWarning("FishermanController not found on FishermanPrefab!");
+            // Assign castingMeter to FishermanController
+            FishermanController fc = fisherman;
+            if (fc != null)
+            {
+                fc.castingMeter = castingMeter;
+                fc.worms = fishermanWorms;
+                UpdateUI(fc.worms);
+            }
+            else
+            {
+                Debug.LogWarning("FishermanController not found on FishermanPrefab!");
+            }
         }
     }
 
@@ -134,5 +148,11 @@ public class GameManager : MonoBehaviour
     public void RestartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void AssignFisherman(FishermanController fc)
+    {
+        Debug.Log("Fisherman assigned on client!");
+        fisherman = fc;
     }
 }

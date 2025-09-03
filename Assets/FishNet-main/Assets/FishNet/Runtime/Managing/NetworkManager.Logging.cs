@@ -117,7 +117,7 @@ namespace FishNet.Managing
             if (GetNetworkManager(ref networkManager))
                 networkManager.InternalLog(message);
             else
-                Debug.Log(message);
+                Debug.Log(message); 
         }
 
         /// <summary>

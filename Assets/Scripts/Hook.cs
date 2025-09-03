@@ -1,8 +1,10 @@
-﻿using UnityEngine;
+﻿using FishNet;
+using FishNet.Object;
 using System.Collections;
+using UnityEngine;
 
 [RequireComponent(typeof(LineRenderer))]
-public class Hook : MonoBehaviour
+public class Hook : NetworkBehaviour
 {
     public Transform rodTip;
     public LineRenderer lineRenderer;
@@ -39,15 +41,13 @@ public class Hook : MonoBehaviour
         lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
         lineRenderer.startColor = Color.white;
         lineRenderer.endColor = Color.white;
+
     }
 
     void Update()
     {
-        if (rodTip == null || lineRenderer == null)
-            return;
 
-        lineRenderer.SetPosition(0, rodTip.position);
-        lineRenderer.SetPosition(1, transform.position);
+        ShowRope();
 
         if (Input.GetMouseButtonDown(1) && !isReturning) // 1 = right mouse button
         {
@@ -56,24 +56,34 @@ public class Hook : MonoBehaviour
 
     }
 
+    public void ShowRope()
+    {
+        if (rodTip == null || lineRenderer == null)
+            return;
+
+        lineRenderer.SetPosition(0, rodTip.position);
+        lineRenderer.SetPosition(1, transform.position);
+    }
+
     public void AttachWorm()
     {
         if (wormPrefab != null && !hasWorm && wormParent != null)
         {
-            wormInstance = Instantiate(wormPrefab, wormParent.position, Quaternion.identity, wormParent);
-            wormInstance.transform.localPosition = Vector3.zero;
-            wormInstance.GetComponent<PolygonCollider2D>().enabled = false;
+            GameObject worm  = Instantiate(wormPrefab, wormParent.position, Quaternion.identity, wormParent);
+            worm.transform.localPosition = Vector3.zero;
+            worm.GetComponent<PolygonCollider2D>().enabled = false;
             hasWorm = true;
+            wormInstance =  worm;
+            Spawn(worm);
         }
     }
 
-    // Launch hook with variable distance
+
     public void LaunchDownWithDistance(float distance)
     {
         distance = Mathf.Clamp(distance, minDistance, maxDistance);
         StartCoroutine(MoveDown(distance));
     }
-
 
     private IEnumerator MoveDown(float distance)
     {
@@ -91,7 +101,6 @@ public class Hook : MonoBehaviour
     public void LoadReturnToRod()
     {
         StartCoroutine(ReturnToRod());
-
     }
 
     private IEnumerator ReturnToRod()

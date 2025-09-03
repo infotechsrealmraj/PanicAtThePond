@@ -142,18 +142,22 @@ public class FishController : NetworkBehaviour
 
         if (other.CompareTag("GoldTrout"))
         {
-            // HungerSystem.instance.AddHunger(25f); 
-            GameManager.instance.SpawnFisherman();
-            Destroy(other.gameObject);
-            Destroy(this.gameObject);
-
+            if(IsServer)
+            {
+                SpawnFisherman();
+                DestroyFish(other.gameObject);
+            }
+            else
+            {
+                RequestSpawnFishermanServerRpc(other.gameObject);
+            }
+            GameManager.instance.LoadMakeFisherMan();
         }
 
         if (other.CompareTag("Worm2"))
         {
              HungerSystem.instance.AddHunger(25f); 
             Destroy(other.gameObject);
-
         }
 
         if (other.CompareTag("Junk") && carriedJunk == null)
@@ -162,6 +166,48 @@ public class FishController : NetworkBehaviour
             carriedJunk.transform.SetParent(junkHolder);
             carriedJunk.transform.localPosition = Vector3.zero;
         }
+    }
+
+    public void DestroyFish(GameObject Worm)
+    {
+        Debug.Log("DestroyFish");   
+        Destroy(Worm);
+        Destroy(gameObject);
+    }
+
+    [ServerRpc]
+    public void RequestSpawnFishermanServerRpc(GameObject worm)
+    {
+        SpawnFisherman(); // server पर call, object complete work करेगा
+        DestroyFish(worm);
+    }
+
+    public void SpawnFisherman()
+    {
+        Debug.Log("SpawnFisherman");
+        var fishermanObj = Instantiate(GameManager.instance.fishermanPrefab,
+            new Vector3(0f, 1.75f, 0f), Quaternion.identity);
+
+       /* if(IsServer)
+        {
+            GameManager.instance.fisherman = fishermanObj;
+        }
+        else
+        {
+            Debug.Log("client SetFisherMan");
+
+            SetFisherMan(fishermanObj);
+        }*/
+
+
+        Spawn(fishermanObj.gameObject);
+    }
+
+    [ObserversRpc]
+    public void SetFisherMan(FishermanController fm)
+    {
+        Debug.Log("SetFisherMan"); 
+        GameManager.instance.fisherman = fm;
     }
 
     void DropJunkToHook(GameObject Fish)
@@ -188,4 +234,6 @@ public class FishController : NetworkBehaviour
 
         carriedJunk = null;
     }
+
+
 }

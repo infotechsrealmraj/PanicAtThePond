@@ -1,9 +1,9 @@
-﻿using System.Collections;
-using Unity.VisualScripting;
+﻿using FishNet.Object;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FishermanController : MonoBehaviour
+public class FishermanController : NetworkBehaviour
 {
     [Header("Movement")]
     public float moveSpeed = 5f;
@@ -28,6 +28,7 @@ public class FishermanController : MonoBehaviour
 
     internal bool isCasting = false;
     internal bool isCanMove = true;
+    internal bool isfisherMan = false;
     private bool meterIncreasing = true;
 
     [HideInInspector] public GameObject leftHook = null;
@@ -54,21 +55,26 @@ public class FishermanController : MonoBehaviour
 
     void Update()
     {
-        if(isCanMove)
+        if (isfisherMan)
         {
-            HandleMovement();
-        }
-        HandleRodSelection();
-        HandleCasting();
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            // Here you can check if a hook has a fish attached
-            // For now, just print a log
-            Debug.Log("Tug-of-war action! Space pressed while fish is hooked.");
+            if (isCanMove)
+            {
+                HandleMovement();   
+            }
+            HandleRodSelection();
+            HandleCasting();
         }
     }
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
 
+        // ✅ Client पर spawn होने के बाद GameManager में assign करो
+        if (IsOwner || IsClient)
+        {
+            GameManager.instance.AssignFisherman(this);
+        }
+    }
     void HandleMovement()
     {
         if (leftHook == null && rightHook == null && !isCasting)
@@ -105,6 +111,7 @@ public class FishermanController : MonoBehaviour
 
             isCasting = true;
             StartCoroutine(CastMeterRoutine());
+
         }
 
         // Release → cast hook with meter value
@@ -116,6 +123,7 @@ public class FishermanController : MonoBehaviour
             }
         }
     }
+   
 
     IEnumerator CastMeterRoutine()
     {
@@ -135,10 +143,12 @@ public class FishermanController : MonoBehaviour
         }
     }
 
+
     void ReleaseCast()
     {
         isCasting = false;
-        StopCoroutine(CastMeterRoutine());
+        StartCoroutine(CastMeterRoutine());
+
 
         if (hookPrefab != null && currentRod != null)
         {
@@ -146,12 +156,12 @@ public class FishermanController : MonoBehaviour
             hook.name = "Hook";
 
             Hook hookScript = hook.GetComponent<Hook>();
+
             if (hookScript != null)
             {
                 hookScript.rodTip = currentRod;
 
                 // Automatic worm attach
-                hookScript.AttachWorm();
 
                 // Launch hook based on meter value
                 float castDistance = castingMeter.value * maxCastDistance;
@@ -161,6 +171,8 @@ public class FishermanController : MonoBehaviour
             // Track hook per rod
             if (currentRod == leftRod) leftHook = hook;
             else rightHook = hook;
+
+            Spawn(hook.gameObject);
 
             if (worms > 0)
             {
@@ -181,18 +193,22 @@ public class FishermanController : MonoBehaviour
     // Check worms and print lose message
     public void CheckWorms()
     {
-        if (worms <= 0)
+        if (isfisherMan)
         {
-            if (GameManager.instance != null && GameManager.instance.gameOverText != null)
-            {
-                GameManager.instance.ShowGameOver("Fisherman Lose!\nFishes Win!");
-            }
-           WormSpawner.instance.canSpawn =  FishermanController.instance.isCanMove = HungerSystem.instance.canDecrease = FishController.instance.canMove = false;
 
-            // Optional: stop all fishing actions
-            leftHook = null;
-            rightHook = null;
-            isCasting = false;
+            if (worms <= 0)
+            {
+                if (GameManager.instance != null && GameManager.instance.gameOverText != null)
+                {
+                    GameManager.instance.ShowGameOver("Fisherman Lose!\nFishes Win!");
+                }
+                WormSpawner.instance.canSpawn = FishermanController.instance.isCanMove = HungerSystem.instance.canDecrease = FishController.instance.canMove = false;
+
+                // Optional: stop all fishing actions
+                leftHook = null;
+                rightHook = null;
+                isCasting = false;
+            }
         }
     }
 

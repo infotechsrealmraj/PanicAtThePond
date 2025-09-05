@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
 public class MiniGameManager : MonoBehaviour
+
 {
     public static MiniGameManager instance;
 
@@ -17,7 +18,7 @@ public class MiniGameManager : MonoBehaviour
     private float timeLimit = 5f;
     private float timeRemaining;
 
-    internal GameObject catchedFish;
+    public GameObject CatchedWorm;
 
     void Awake()
     {
@@ -26,7 +27,7 @@ public class MiniGameManager : MonoBehaviour
 
     public void StartMiniGame()
     {
-        FishermanController.instance.isCasting = HungerSystem.instance.canDecrease =  FishController.instance.canMove = false;
+        FishermanController.instance.isCasting =HungerSystem.instance.canDecrease =  FishController.instance.canMove = false;
 
         active = true;
         progress = 0;
@@ -99,14 +100,14 @@ public class MiniGameManager : MonoBehaviour
             Fail();
     }
 
+
     void Success()
     {
         FishermanController.instance.isCanMove =  HungerSystem.instance.canDecrease = FishController.instance.canMove = true;
         HungerSystem.instance.AddHunger(75f);
-
+       FishController.instance.DestrouWorm();
         active = false;
         miniGamePanel.transform.localScale = Vector3.zero;
-        Destroy(catchedFish);
         Hook.instance.LoadReturnToRod();
         Debug.Log("Mini-game Success! Fish escaped with worm!");
         if (timerText != null) timerText.text = "";
@@ -114,14 +115,15 @@ public class MiniGameManager : MonoBehaviour
         
     void Fail()
     {
-
-
         active = false;
         miniGamePanel.transform.localScale = Vector3.zero;
-        Destroy(catchedFish);
+        Destroy(CatchedWorm);
         Hook.instance.LoadReturnToRod();
         MashPhaseManager.instance.StartMashPhase();
         Debug.Log("Mini-game Failed! Fisherman caught the fish!");
         if (timerText != null) timerText.text = "";
     }
+
+
+    
 }

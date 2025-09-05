@@ -1,5 +1,4 @@
-﻿using FishNet;
-using FishNet.Object;
+﻿using FishNet.Object;
 using System.Collections;
 using UnityEngine;
 
@@ -12,7 +11,7 @@ public class Hook : NetworkBehaviour
 
     public GameObject wormPrefab;
     public Transform wormParent;
-    private GameObject wormInstance;
+    internal GameObject wormInstance;
 
     private bool hasWorm = false;
     private bool isReturning = false;
@@ -22,12 +21,15 @@ public class Hook : NetworkBehaviour
 
     public static Hook instance;
 
+    public Vector3 pos;
+
     private void Awake()
     {
         if (instance == null)
         {
             instance = this;
         }
+        pos = transform.position;
     }
 
     void Start()
@@ -42,42 +44,52 @@ public class Hook : NetworkBehaviour
         lineRenderer.startColor = Color.white;
         lineRenderer.endColor = Color.white;
 
-    }
-
-    void Update()
-    {
-
-        ShowRope();
-
-        if (Input.GetMouseButtonDown(1) && !isReturning) // 1 = right mouse button
+        if(IsServer)
         {
-            LoadReturnToRod();
+            AttachWorm();
         }
 
     }
 
+    void Update()
+    {
+        ShowRope();
+        if (Input.GetMouseButtonDown(1) && !isReturning  && FishermanController.instance.isfisherMan) // 1 = right mouse button
+        {
+            LoadReturnToRod();
+        }
+    }
+
     public void ShowRope()
     {
-        if (rodTip == null || lineRenderer == null)
-            return;
 
-        lineRenderer.SetPosition(0, rodTip.position);
-        lineRenderer.SetPosition(1, transform.position);
+        if (rodTip != null)
+        {
+            lineRenderer.SetPosition(0, rodTip.position);
+            lineRenderer.SetPosition(1, transform.position);
+        }
+        else
+        {
+            lineRenderer.SetPosition(0, pos);
+            lineRenderer.SetPosition(1, transform.position);
+        }
     }
 
     public void AttachWorm()
     {
         if (wormPrefab != null && !hasWorm && wormParent != null)
         {
-            GameObject worm  = Instantiate(wormPrefab, wormParent.position, Quaternion.identity, wormParent);
+            GameObject worm = Instantiate(wormPrefab, wormParent.position, Quaternion.identity, wormParent);
             worm.transform.localPosition = Vector3.zero;
             worm.GetComponent<PolygonCollider2D>().enabled = false;
             hasWorm = true;
-            wormInstance =  worm;
-            Spawn(worm);
+            wormInstance = worm;
+            if (IsServer)
+                Spawn(worm);
+
+            worm.transform.SetParent(wormParent, false);
         }
     }
-
 
     public void LaunchDownWithDistance(float distance)
     {
@@ -94,10 +106,26 @@ public class Hook : NetworkBehaviour
             yield return null;
         }
 
-        wormInstance.GetComponent<PolygonCollider2D>().enabled = true;
-
+        if (wormInstance != null)
+        {
+          wormInstance.GetComponent<PolygonCollider2D>().enabled = true;
+        }
+        EnableClientColider();
     }
 
+
+    [ObserversRpc]
+    public void EnableClientColider()
+    {
+        Debug.Log("EnableClientColider");
+        if (wormInstance != null)
+        {
+            wormInstance.GetComponent<PolygonCollider2D>().enabled = true;
+        }
+    }
+
+
+    [ServerRpc(RequireOwnership = false)]
     public void LoadReturnToRod()
     {
         StartCoroutine(ReturnToRod());
@@ -137,6 +165,7 @@ public class Hook : NetworkBehaviour
         {
             fc.ClearHookReference(this.gameObject);
             fc.CheckWorms();
+            fc.isCanMove = true;
 
         }
     }

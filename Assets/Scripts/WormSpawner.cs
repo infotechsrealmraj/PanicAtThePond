@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using FishNet.Object;
-using FishNet.Connection;
 
 public class WormSpawner : NetworkBehaviour
 {

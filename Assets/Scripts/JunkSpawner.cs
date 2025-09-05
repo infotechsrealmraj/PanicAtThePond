@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using FishNet.Object; // ✅ FishNet networking
-using FishNet.Object.Synchronizing;
 
 public class JunkSpawner : NetworkBehaviour
 {

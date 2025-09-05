@@ -26,6 +26,8 @@ public class FishController : NetworkBehaviour
     public Transform junkHolder;   
     private GameObject carriedJunk;
 
+    public GameObject CatchedWorm;
+
     // Event for fish death
     public static event System.Action<FishController> OnFishDied;
 
@@ -136,8 +138,13 @@ public class FishController : NetworkBehaviour
                 DropJunkToHook(other.gameObject);
                 return;
             }
-            MiniGameManager.instance.StartMiniGame();
-            MiniGameManager.instance.catchedFish = other.gameObject;
+            canMove = false;
+
+            if (!FishermanController.instance.isfisherMan)
+            {
+                MiniGameManager.instance.StartMiniGame();
+            }
+          CatchedWorm = other.gameObject;
         }
 
         if (other.CompareTag("GoldTrout"))
@@ -168,6 +175,12 @@ public class FishController : NetworkBehaviour
         }
     }
 
+
+    [ServerRpc(RequireOwnership = false)]
+    public void DestrouWorm()
+    {
+        Destroy(CatchedWorm);
+    }
     public void DestroyFish(GameObject Worm)
     {
         Debug.Log("DestroyFish");   
@@ -187,27 +200,14 @@ public class FishController : NetworkBehaviour
         Debug.Log("SpawnFisherman");
         var fishermanObj = Instantiate(GameManager.instance.fishermanPrefab,
             new Vector3(0f, 1.75f, 0f), Quaternion.identity);
-
-       /* if(IsServer)
-        {
-            GameManager.instance.fisherman = fishermanObj;
-        }
-        else
-        {
-            Debug.Log("client SetFisherMan");
-
-            SetFisherMan(fishermanObj);
-        }*/
-
-
         Spawn(fishermanObj.gameObject);
     }
 
-    [ObserversRpc]
+    [ServerRpc]
     public void SetFisherMan(FishermanController fm)
     {
         Debug.Log("SetFisherMan"); 
-        GameManager.instance.fisherman = fm;
+        GameManager.instance.fisherman = fm;    
     }
 
     void DropJunkToHook(GameObject Fish)
@@ -217,7 +217,9 @@ public class FishController : NetworkBehaviour
         if (wormParent != null)
         {
             HungerSystem.instance.canDecrease = canMove = true;
+
             HungerSystem.instance.AddHunger(75f);
+
             carriedJunk.transform.SetParent(wormParent);
             carriedJunk.GetComponent<PolygonCollider2D>().enabled = false;
             carriedJunk.transform.localPosition = Vector3.zero;
@@ -234,6 +236,4 @@ public class FishController : NetworkBehaviour
 
         carriedJunk = null;
     }
-
-
 }

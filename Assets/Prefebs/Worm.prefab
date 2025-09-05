@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 2701714962275104732}
   - component: {fileID: 2482996836408929340}
   - component: {fileID: 5395727129170217643}
-  - component: {fileID: 8729091836530281274}
-  - component: {fileID: -512808198050517832}
-  - component: {fileID: -3382785367224043187}
+  - component: {fileID: -4400386538045311317}
+  - component: {fileID: -3538952442297669682}
+  - component: {fileID: -6324367078734279944}
   m_Layer: 0
   m_Name: Worm
   m_TagString: Worm
@@ -98,7 +98,7 @@ PolygonCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7213787239234744724}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
@@ -244,7 +244,7 @@ PolygonCollider2D:
       - {x: 1.185, y: 1.745}
       - {x: 1.185, y: 1.875}
   m_UseDelaunayMesh: 0
---- !u!114 &8729091836530281274
+--- !u!114 &-4400386538045311317
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -263,7 +263,8 @@ MonoBehaviour:
   <PredictedSpawn>k__BackingField: {fileID: 0}
   <PredictedOwner>k__BackingField: {fileID: 0}
   NetworkBehaviours:
-  - {fileID: -512808198050517832}
+  - {fileID: -3538952442297669682}
+  - {fileID: -6324367078734279944}
   InitializedParentNetworkBehaviour: {fileID: 0}
   InitializedNestedNetworkObjects: []
   RuntimeParentNetworkBehaviour: {fileID: 0}
@@ -288,7 +289,7 @@ MonoBehaviour:
   _spectatorInterpolation: 2
   _enableTeleport: 0
   _teleportThreshold: 1
-  <PrefabId>k__BackingField: 18
+  <PrefabId>k__BackingField: 17
   <SpawnableCollectionId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 16379718038461026405
   <SceneId>k__BackingField: 0
@@ -297,7 +298,7 @@ MonoBehaviour:
     Rotation: {x: 0, y: 0, z: 0, w: 1}
     Scale: {x: 1, y: 1, z: 1}
     IsValid: 1
---- !u!114 &-512808198050517832
+--- !u!114 &-3538952442297669682
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -310,9 +311,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _componentIndexCache: 0
-  _addedNetworkObject: {fileID: 8729091836530281274}
-  _networkObjectCache: {fileID: 8729091836530281274}
---- !u!114 &-3382785367224043187
+  _addedNetworkObject: {fileID: -4400386538045311317}
+  _networkObjectCache: {fileID: -4400386538045311317}
+--- !u!114 &-6324367078734279944
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -324,5 +325,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9dec1e3c0fc70445968922c08b0b8c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Parent: {fileID: 0}
-  PolygonCollider2D: {fileID: 5395727129170217643}
+  _componentIndexCache: 1
+  _addedNetworkObject: {fileID: -4400386538045311317}
+  _networkObjectCache: {fileID: -4400386538045311317}

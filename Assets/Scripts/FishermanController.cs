@@ -1,4 +1,5 @@
-﻿using FishNet.Object;
+﻿using FishNet.Connection;
+using FishNet.Object;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,7 +12,7 @@ public class FishermanController : NetworkBehaviour
     [Header("Rod Selection")]
     public Transform leftRod;
     public Transform rightRod;
-    private Transform currentRod;
+    public Transform currentRod;
 
     [Header("Casting")]
     public KeyCode castKey1 = KeyCode.X;
@@ -57,10 +58,7 @@ public class FishermanController : NetworkBehaviour
     {
         if (isfisherMan)
         {
-            if (isCanMove)
-            {
-                HandleMovement();   
-            }
+            HandleMovement();
             HandleRodSelection();
             HandleCasting();
         }
@@ -75,19 +73,33 @@ public class FishermanController : NetworkBehaviour
             GameManager.instance.AssignFisherman(this);
         }
     }
+
     void HandleMovement()
     {
-        if (leftHook == null && rightHook == null && !isCasting)
+        if (leftHook == null && rightHook == null && !isCasting && isCanMove)
         {
             float moveInput = Input.GetAxisRaw("Horizontal");
-            Vector3 move = new Vector3(moveInput * moveSpeed * Time.deltaTime, 0, 0);
-            transform.position += move;
-
-            // Clamp only X position
-            Vector3 clampedPos = transform.position;
-            clampedPos.x = Mathf.Clamp(clampedPos.x, minX, maxX);
-            transform.position = clampedPos;
+            if (Mathf.Abs(moveInput) > 0.01f)
+            {
+                Debug.Log($"Sending input to server: {moveInput}");
+                SendMoveInputServerRpc(moveInput, Time.fixedDeltaTime);
+            }
         }
+    }
+
+
+    
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SendMoveInputServerRpc(float moveInput, float deltaTime)
+    {
+        Debug.Log($"[SERVER] Received input: {moveInput}");
+        Vector3 move = new Vector3(moveInput * moveSpeed * deltaTime, 0, 0);
+        transform.position += move;
+
+        Vector3 clampedPos = transform.position;
+        clampedPos.x = Mathf.Clamp(clampedPos.x, minX, maxX);
+        transform.position = clampedPos;
     }
 
     void HandleRodSelection()
@@ -108,6 +120,7 @@ public class FishermanController : NetworkBehaviour
                 Debug.Log("Rod already has a hook!");
                 return;
             }
+
 
             isCasting = true;
             StartCoroutine(CastMeterRoutine());
@@ -143,51 +156,62 @@ public class FishermanController : NetworkBehaviour
         }
     }
 
-
     void ReleaseCast()
     {
-        isCasting = false;
+        isCanMove =  isCasting = false;
         StartCoroutine(CastMeterRoutine());
-
 
         if (hookPrefab != null && currentRod != null)
         {
-            GameObject hook = Instantiate(hookPrefab, currentRod.position, Quaternion.identity);
-            hook.name = "Hook";
+            // Client -> Server ko request bheje
+            float castDistance = castingMeter.value * maxCastDistance;
+            ReleaseCastServerRpc(currentRod == leftRod, castDistance);
+        }
+    }
 
-            Hook hookScript = hook.GetComponent<Hook>();
+    [ServerRpc(RequireOwnership = false)]
+    private void ReleaseCastServerRpc(bool isLeftRod, float castDistance)
+    {
+        Transform rod = isLeftRod ? leftRod : currentRod;
 
-            if (hookScript != null)
-            {
-                hookScript.rodTip = currentRod;
+        GameObject hook = Instantiate(hookPrefab, rod.position, Quaternion.identity);
+        hook.name = "Hook";
 
-                // Automatic worm attach
-
-                // Launch hook based on meter value
-                float castDistance = castingMeter.value * maxCastDistance;
-                hookScript.LaunchDownWithDistance(castDistance);
-            }
-
-            // Track hook per rod
-            if (currentRod == leftRod) leftHook = hook;
-            else rightHook = hook;
-
-            Spawn(hook.gameObject);
-
-            if (worms > 0)
-            {
-                worms--;
-                GameManager.instance.UpdateUI(worms);
-                Debug.Log("Worm used! Remaining: " + worms);
-            }
+        Hook hookScript = hook.GetComponent<Hook>();
+        if (hookScript != null)
+        {
+            hookScript.rodTip = rod;
+            hookScript.LaunchDownWithDistance(castDistance);
         }
 
-        castingMeter.value = 0;
+        // Track hook per rod
+        if (isLeftRod) leftHook = hook;
+        else rightHook = hook;
+
+        // Server spawn karega
+        Spawn(hook);
+
+        // Worm count decrease
+        if (worms > 0)
+        {
+            worms--;
+            GameManager.instance.UpdateUI(worms);
+            Debug.Log($"[SERVER] Worm used! Remaining: {worms}");
+        }
     }
+
     public void ClearHookReference(GameObject hook)
     {
         if (hook == leftHook) leftHook = null;
         if (hook == rightHook) rightHook = null;
+    }
+
+
+    [ObserversRpc]
+    public void SetCurruntRodinHook(Transform tip)
+    {
+        Debug.Log("SetCurruntRodinHook");
+        Hook.instance.rodTip = tip;
     }
 
     // Check worms and print lose message
@@ -202,7 +226,7 @@ public class FishermanController : NetworkBehaviour
                 {
                     GameManager.instance.ShowGameOver("Fisherman Lose!\nFishes Win!");
                 }
-                WormSpawner.instance.canSpawn = FishermanController.instance.isCanMove = HungerSystem.instance.canDecrease = FishController.instance.canMove = false;
+                WormSpawner.instance.canSpawn = isCanMove = HungerSystem.instance.canDecrease = FishController.instance.canMove = false;
 
                 // Optional: stop all fishing actions
                 leftHook = null;
@@ -211,5 +235,6 @@ public class FishermanController : NetworkBehaviour
             }
         }
     }
+
 
 }

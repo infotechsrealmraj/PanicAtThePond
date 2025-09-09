@@ -57,6 +57,7 @@ public class Hook : NetworkBehaviour
         if (Input.GetMouseButtonDown(1) && !isReturning  && FishermanController.instance.isfisherMan) // 1 = right mouse button
         {
             LoadReturnToRod();
+            
         }
     }
 
@@ -131,21 +132,52 @@ public class Hook : NetworkBehaviour
         StartCoroutine(ReturnToRod());
     }
 
-    private IEnumerator ReturnToRod()
+   
+    public void DropWorm()
+    {
+        if (IsServer)
+        {
+            ExecuteFunctionLocal();
+            ExecuteFunctionObserversRpc();
+        }
+        else
+        {
+            CallUniversalServerRpc();
+        }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void CallUniversalServerRpc()
+    {
+        ExecuteFunctionLocal();
+
+        ExecuteFunctionObserversRpc();
+    }
+
+    [ObserversRpc] 
+    private void ExecuteFunctionObserversRpc()
+    {
+        ExecuteFunctionLocal();
+    }
+
+    private void ExecuteFunctionLocal()
     {
         if (wormInstance != null)
-            wormInstance.GetComponent<PolygonCollider2D>().enabled = false;
-
-        isReturning = true;
-        Vector3 target = rodTip.position;
-
-        // Detach worm from hook so it stays in scene
-        if (wormInstance != null)
         {
+            wormInstance.tag = "DropedWorm";
             wormInstance.transform.parent = null; // worm ko hook se alag kar do
             wormInstance = null; // reference clear
             hasWorm = false;
         }
+    }
+
+    private IEnumerator ReturnToRod()
+    {
+        isReturning = true;
+        Vector3 target = rodTip.position;
+
+        // Detach worm from hook so it stays in scene
+        DropWorm();
 
         while (Vector3.Distance(transform.position, target) > 0.05f)
         {

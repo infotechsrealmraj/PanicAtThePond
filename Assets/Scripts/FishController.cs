@@ -140,16 +140,19 @@ public class FishController : NetworkBehaviour
             }
             canMove = false;
 
+            Destroy(other.gameObject);
+
             if (!FishermanController.instance.isfisherMan)
             {
                 MiniGameManager.instance.StartMiniGame();
             }
-          CatchedWorm = other.gameObject;
+
+            CatchedWorm = other.gameObject;
         }
 
         if (other.CompareTag("GoldTrout"))
         {
-            if(IsServer)
+            if (IsServer)
             {
                 SpawnFisherman();
                 DestroyFish(other.gameObject);
@@ -161,9 +164,15 @@ public class FishController : NetworkBehaviour
             GameManager.instance.LoadMakeFisherMan();
         }
 
+        if (other.CompareTag("DropedWorm"))
+        {
+            HungerSystem.instance.AddHunger(75f);
+            Destroy(other.gameObject);
+        }
+
         if (other.CompareTag("Worm2"))
         {
-             HungerSystem.instance.AddHunger(25f); 
+            HungerSystem.instance.AddHunger(25f);
             Destroy(other.gameObject);
         }
 

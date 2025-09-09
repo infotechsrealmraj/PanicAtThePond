@@ -32,8 +32,8 @@ public class FishermanController : NetworkBehaviour
     internal bool isfisherMan = false;
     private bool meterIncreasing = true;
 
-    [HideInInspector] public GameObject leftHook = null;
-    [HideInInspector] public GameObject rightHook = null;
+    [HideInInspector] public bool leftHook = false;
+    [HideInInspector] public bool rightHook = false;
 
     [Header("Horizontal Bounds")]
     public float minX = -8f;
@@ -76,7 +76,7 @@ public class FishermanController : NetworkBehaviour
 
     void HandleMovement()
     {
-        if (leftHook == null && rightHook == null && !isCasting && isCanMove)
+        if (leftHook == false && rightHook == false && !isCasting && isCanMove)
         {
             float moveInput = Input.GetAxisRaw("Horizontal");
             if (Mathf.Abs(moveInput) > 0.01f)
@@ -115,7 +115,7 @@ public class FishermanController : NetworkBehaviour
         // X + V held down → start casting meter
         if (!isCasting && Input.GetKey(castKey1) && Input.GetKey(castKey2))
         {
-            if (( leftHook != null) || (rightHook != null))
+            if (( leftHook != false) || (rightHook != false))
             {
                 Debug.Log("Rod already has a hook!");
                 return;
@@ -158,7 +158,7 @@ public class FishermanController : NetworkBehaviour
 
     void ReleaseCast()
     {
-        isCanMove =  isCasting = false;
+        isCanMove = isCasting = false;
         StartCoroutine(CastMeterRoutine());
 
         if (hookPrefab != null && currentRod != null)
@@ -166,6 +166,23 @@ public class FishermanController : NetworkBehaviour
             // Client -> Server ko request bheje
             float castDistance = castingMeter.value * maxCastDistance;
             ReleaseCastServerRpc(currentRod == leftRod, castDistance);
+
+            // Track hook per rod
+            if (currentRod == leftRod)
+            {
+                leftHook = true;
+            }
+            else
+            {
+                rightHook = true;
+            }
+
+            if (worms > 0)
+            {
+                worms--;
+                GameManager.instance.UpdateUI(worms);
+                Debug.Log($"[SERVER] Worm used! Remaining: {worms}");
+            }
         }
     }
 
@@ -184,26 +201,19 @@ public class FishermanController : NetworkBehaviour
             hookScript.LaunchDownWithDistance(castDistance);
         }
 
-        // Track hook per rod
-        if (isLeftRod) leftHook = hook;
-        else rightHook = hook;
+       
 
         // Server spawn karega
         Spawn(hook);
 
         // Worm count decrease
-        if (worms > 0)
-        {
-            worms--;
-            GameManager.instance.UpdateUI(worms);
-            Debug.Log($"[SERVER] Worm used! Remaining: {worms}");
-        }
+       
     }
 
     public void ClearHookReference(GameObject hook)
     {
-        if (hook == leftHook) leftHook = null;
-        if (hook == rightHook) rightHook = null;
+        if (hook == leftHook) leftHook = false;
+        if (hook == rightHook) rightHook = false;
     }
 
 
@@ -229,8 +239,8 @@ public class FishermanController : NetworkBehaviour
                 WormSpawner.instance.canSpawn = isCanMove = HungerSystem.instance.canDecrease = FishController.instance.canMove = false;
 
                 // Optional: stop all fishing actions
-                leftHook = null;
-                rightHook = null;
+                leftHook = false;
+                rightHook = false;
                 isCasting = false;
             }
         }

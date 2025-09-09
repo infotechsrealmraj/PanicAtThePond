@@ -118,12 +118,10 @@ public class MiniGameManager : MonoBehaviour
         active = false;
         miniGamePanel.transform.localScale = Vector3.zero;
         Destroy(CatchedWorm);
-        Hook.instance.LoadReturnToRod();
+        //Hook.instance.LoadReturnToRod();
         MashPhaseManager.instance.StartMashPhase();
         Debug.Log("Mini-game Failed! Fisherman caught the fish!");
         if (timerText != null) timerText.text = "";
     }
-
-
     
 }

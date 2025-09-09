@@ -146,6 +146,7 @@ MonoBehaviour:
   canMove: 1
   floatSpeed: 2
   junkHolder: {fileID: 4626417357385204189}
+  CatchedWorm: {fileID: 0}
   Autospeed: 3
 --- !u!114 &7404564085461583181
 MonoBehaviour:

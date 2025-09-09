@@ -24,9 +24,9 @@ public class MashPhaseManager : MonoBehaviour
     public void StartMashPhase()
     {
         JunkSpawner.instance.canSpawn = WormSpawner.instance.canSpawn = FishermanController.instance.isCanMove = HungerSystem.instance.canDecrease = false;
-
+        
         if (mashPanel != null) mashPanel.SetActive(true);
-        if (mashSlider != null) mashSlider.value = 0.5f; 
+        if (mashSlider != null) mashSlider.value = 0f; 
 
         active = true;
         mashText.text = "MASH SPACE BAR!";
@@ -38,23 +38,20 @@ public class MashPhaseManager : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Space))
         {
-            mashSlider.value -= mashSpeed * Time.deltaTime * 60;
-        }
-
-        // Fisherman  input 
-        if (Input.GetKey(KeyCode.Z))
-        {
             mashSlider.value += mashSpeed * Time.deltaTime * 60;
         }
 
         // Check end conditions
-        if (mashSlider.value <= 0f)
+        if (mashSlider.value >= 1f)
         {
-            EndMashPhase(true);  // Fish escaped
-        }
-        else if (mashSlider.value >= 1f)
-        {
-            EndMashPhase(false); // Fisherman caught
+            if (FishermanController.instance.isfisherMan)
+            {
+                EndMashPhase(true); // Fisherman caught
+            }
+            else
+            {
+                EndMashPhase(false); // Fisherman caught
+            }
         }
     }
 
@@ -70,7 +67,6 @@ public class MashPhaseManager : MonoBehaviour
         {
             HungerSystem.instance.AddHunger(75f);
             Debug.Log("Fish won the mash phase! Escaped hook.");
-
         }
         else
         {

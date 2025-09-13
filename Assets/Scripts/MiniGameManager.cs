@@ -18,8 +18,9 @@ public class MiniGameManager : MonoBehaviour
     private float timeLimit = 5f;
     private float timeRemaining;
 
-    public GameObject CatchedWorm;
 
+
+    
     void Awake()
     {
         instance = this;
@@ -105,23 +106,41 @@ public class MiniGameManager : MonoBehaviour
     {
         FishermanController.instance.isCanMove =  HungerSystem.instance.canDecrease = FishController.instance.canMove = true;
         HungerSystem.instance.AddHunger(75f);
-       FishController.instance.DestrouWorm();
+        FishController.instance.DestrouWorm();
+
+        for (int i = 0; i < GameManager.instance.AllFishPlayers.Count; i++)
+        {
+            if (GameManager.instance.AllFishPlayers[i] != null)
+            {
+                GameManager.instance.AllFishPlayers[i].ChangeTag("Fish");
+            }
+            else
+            {
+                Debug.Log("FishController is null");
+            }
+        }
+
         active = false;
         miniGamePanel.transform.localScale = Vector3.zero;
         Hook.instance.LoadReturnToRod();
         Debug.Log("Mini-game Success! Fish escaped with worm!");
         if (timerText != null) timerText.text = "";
+
+
     }
         
     void Fail()
     {
         active = false;
         miniGamePanel.transform.localScale = Vector3.zero;
-        Destroy(CatchedWorm);
         //Hook.instance.LoadReturnToRod();
         MashPhaseManager.instance.StartMashPhase();
+
         Debug.Log("Mini-game Failed! Fisherman caught the fish!");
         if (timerText != null) timerText.text = "";
+
+
+
     }
     
 }

@@ -42,8 +42,17 @@ public class GameManager : MonoBehaviour
     public Image bucketImage;   // assign bucket Image (UI Image)
     public Text wormCountText;
 
+    [Header("UI")]
+    public GameObject mashPanel;
+    public Slider mashSlider;   // 0 = escape (fish), 1 = capture (fisherman)
+    public Text mashText;
 
-    private void Awake()
+    public List<GameObject> DisabledObjects = new List<GameObject>();
+
+    public List<FishController> AllFishPlayers = new List<FishController>();
+
+    public FishController fish;
+    private void Awake()    
     {
         instance = this;
 
@@ -53,8 +62,24 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         // SetupGame();
-    }
 
+    }
+    public void EnableAll()
+    {
+
+        for (int i = 0; i < DisabledObjects.Count; i++)
+        {
+            if (DisabledObjects[i] != null && !DisabledObjects[i].activeSelf)
+            {
+                DisabledObjects[i].SetActive(true);
+                Debug.Log("Is not enable");
+            }
+            else
+            {
+                Debug.Log("Is  enable");
+            }
+        }
+    }
     public void UpdateUI(int currunt_Warms)
     {
         // Text
@@ -75,23 +100,6 @@ public class GameManager : MonoBehaviour
         {
             bucketImage.sprite = emptyBucket;
         }
-    }
-
-    void SetupGame()
-    {
-        // Spawn Fish
-        for (int i = 0; i < 7; i++)
-        {
-            float x = Random.Range(minBounds.x, maxBounds.x);
-            float y = Random.Range(minBounds.y, maxBounds.y);
-            Vector3 spawnPos = new Vector3(x, y, 0);
-
-            GameObject fish = Instantiate(fishPrefab, spawnPos, Quaternion.identity);
-            fish.name = "Fish_" + (i + 1);
-            fishes.Add(fish);
-        }
-
-        Debug.Log("Fish Spawned: " + fishes.Count);
     }
 
     public FishermanController fisherman;
@@ -133,10 +141,7 @@ public class GameManager : MonoBehaviour
 
     public void ShowGameOver(string message)
     {
-        if (gameOverPanel != null)
-        {
-            gameOverPanel.SetActive(true);
-        }
+      
 
         if (gameOverText != null)
         {
@@ -147,7 +152,7 @@ public class GameManager : MonoBehaviour
     // Restart Button function
     public void RestartGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene("Dash");
     }
 
     public void AssignFisherman(FishermanController fc)

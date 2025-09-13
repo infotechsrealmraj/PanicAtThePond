@@ -1,7 +1,10 @@
 ﻿using FishNet.Connection;
 using FishNet.Managing;
 using FishNet.Managing.Scened;
+using FishNet.Managing.Server;
+using FishNet.Object;
 using FishNet.Transporting;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,6 +27,7 @@ public class NetworkUI : MonoBehaviour
     public int playersRequired = 2;
     private bool playersSpawned = false;
     private bool playSceneLoaded = false;
+
 
     private void OnEnable()
     {
@@ -110,7 +114,6 @@ public class NetworkUI : MonoBehaviour
         }
     }
 
-    // 🆚 नया method: Scene load होने के बाद call होता है
     private void OnSceneLoadEnd(SceneLoadEndEventArgs args)
     {
         if (args.LoadedScenes[0].name == "Play")
@@ -131,7 +134,6 @@ public class NetworkUI : MonoBehaviour
         {
             playSceneLoaded = true;
 
-            // 🆚 सभी clients को Play scene में load करें
             SceneLoadData sld = new SceneLoadData("Play")
             {
                 ReplaceScenes = ReplaceOption.All // This unloads the current scene(s) first
@@ -142,7 +144,7 @@ public class NetworkUI : MonoBehaviour
         }
     }
 
-
+   
     private void TrySpawnPlayers()
     {
         if (playersSpawned) return;
@@ -167,6 +169,9 @@ public class NetworkUI : MonoBehaviour
             GameObject go = Instantiate(playerPrefab, randomPos, Quaternion.Euler(0, 0, 0));
             networkManager.ServerManager.Spawn(go, conn);
 
+
+            int connectionId = conn.ClientId;
+
             Debug.Log($"Spawned player for client {conn.ClientId} at random position {randomPos}");
         }
 
@@ -174,6 +179,9 @@ public class NetworkUI : MonoBehaviour
         Debug.Log("🎮 All players spawned via ServerManager.Spawn()");
     }
 
+   
+
+  
     // Random spawn position generate करने का method
     private Vector3 GetRandomSpawnPosition()
     {
@@ -196,4 +204,9 @@ public class NetworkUI : MonoBehaviour
 
         playersListText.text = list;
     }
+
+
+   
+
+
 }

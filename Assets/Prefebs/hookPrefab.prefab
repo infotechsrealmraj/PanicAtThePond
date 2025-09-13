@@ -193,6 +193,7 @@ MonoBehaviour:
   wormParent: {fileID: 7448163867579369296}
   minDistance: 3
   maxDistance: 8
+  pos: {x: 0, y: 0, z: 0}
 --- !u!120 &2015050245431887086
 LineRenderer:
   serializedVersion: 2
@@ -385,9 +386,9 @@ MonoBehaviour:
   _enableStateForwarding: 1
   _networkTransform: {fileID: 0}
   _ownerInterpolation: 1
-  _ownerSmoothedProperties: 255
+  _ownerSmoothedProperties: 4294967295
   _adaptiveInterpolation: 3
-  _spectatorSmoothedProperties: 255
+  _spectatorSmoothedProperties: 4294967295
   _spectatorInterpolation: 2
   _enableTeleport: 0
   _teleportThreshold: 1

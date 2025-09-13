@@ -27,13 +27,16 @@ public class WormSpawner : NetworkBehaviour
         if (IsServer)
         {
             Debug.Log("I M Server");
-            InvokeRepeating("SpawnWorm", 1f, spawnInterval);
+            Invoke("SpawnWorm",0f);
             Invoke("SpawnGoldWorm", Random.Range(5f, 10f));
         }
     }
 
     void SpawnWorm()
     {
+        if (!canSpawn) return;
+
+
 
         float x = Random.Range(-xRange, xRange);
         float y = Random.Range(-yRange, 0);
@@ -41,7 +44,10 @@ public class WormSpawner : NetworkBehaviour
 
         GameObject worm = Instantiate(wormPrefab, pos, Quaternion.identity);
         if (IsServer)
-            Spawn(worm); // यह NetworkBehaviour की built-in method है (ServerManager.Spawn का shorthand)
+            Spawn(worm);
+
+        Invoke("SpawnWorm", Random.Range(2, 5));
+
     }
 
 

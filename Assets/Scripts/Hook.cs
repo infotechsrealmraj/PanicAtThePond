@@ -48,7 +48,6 @@ public class Hook : NetworkBehaviour
         {
             AttachWorm();
         }
-
     }
 
     void Update()
@@ -57,10 +56,8 @@ public class Hook : NetworkBehaviour
         if (Input.GetMouseButtonDown(1) && !isReturning  && FishermanController.instance.isfisherMan) // 1 = right mouse button
         {
             LoadReturnToRod();
-            
         }
     }
-
     public void ShowRope()
     {
 
@@ -132,7 +129,10 @@ public class Hook : NetworkBehaviour
         StartCoroutine(ReturnToRod());
     }
 
-   
+
+  
+
+
     public void DropWorm()
     {
         if (IsServer)
@@ -185,7 +185,9 @@ public class Hook : NetworkBehaviour
             yield return null;
         }
 
-        Destroy(gameObject); // hook destroy
+        MashPhaseManager.instance.mashPanel.SetActive(false);
+
+        Destroy(gameObject); 
     }
 
 

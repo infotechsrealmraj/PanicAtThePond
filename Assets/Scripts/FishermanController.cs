@@ -1,5 +1,4 @@
-﻿using FishNet.Connection;
-using FishNet.Object;
+﻿using FishNet.Object;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -41,6 +40,7 @@ public class FishermanController : NetworkBehaviour
 
     public static FishermanController instance;
 
+    public int catchadFishes = 0;
    
     private void Awake()
     {
@@ -201,8 +201,6 @@ public class FishermanController : NetworkBehaviour
             hookScript.LaunchDownWithDistance(castDistance);
         }
 
-       
-
         // Server spawn karega
         Spawn(hook);
 
@@ -216,7 +214,6 @@ public class FishermanController : NetworkBehaviour
         if (hook == rightHook) rightHook = false;
     }
 
-
     [ObserversRpc]
     public void SetCurruntRodinHook(Transform tip)
     {
@@ -227,10 +224,30 @@ public class FishermanController : NetworkBehaviour
     // Check worms and print lose message
     public void CheckWorms()
     {
-        if (isfisherMan)
+        if(catchadFishes >= 2)
         {
+            if (isfisherMan)
+            {
+                GameManager gm = GameManager.instance;
+                gm.gameOverPanel.SetActive(true);
+                gm.ShowGameOver("You Win!");
+                for (int i = 0; i < GameManager.instance.AllFishPlayers.Count; i++)
+                {
+                    GameManager.instance.AllFishPlayers[i].ShowGameOver();
+                }
+                WormSpawner.instance.canSpawn = isCanMove = HungerSystem.instance.canDecrease = FishController.instance.canMove = false;
 
-            if (worms <= 0)
+                // Optional: stop all fishing actions
+                leftHook = false;
+                rightHook = false;
+                isCasting = false;
+            }
+            return;
+        }
+
+        if (worms <= 0)
+        {
+            if (isfisherMan)
             {
                 if (GameManager.instance != null && GameManager.instance.gameOverText != null)
                 {
@@ -244,6 +261,7 @@ public class FishermanController : NetworkBehaviour
                 isCasting = false;
             }
         }
+
     }
 
 

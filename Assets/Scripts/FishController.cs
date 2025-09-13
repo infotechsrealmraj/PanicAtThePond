@@ -1,6 +1,7 @@
 ﻿using FishNet.Object;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class FishController : NetworkBehaviour
 {
@@ -39,15 +40,35 @@ public class FishController : NetworkBehaviour
         }
         originalScaleX = transform.localScale.x;
         originalScaleY = transform.localScale.y;
+
+       
     }
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        StartCoroutine(SetObjectainGamemanager());
     }
 
+    public GameObject localPlayer; // आपके local clone का reference
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+
+        if (IsOwner) // ये मेरा object है
+        {
+            localPlayer = this.gameObject;
+            Debug.Log("Local player spawned: " + gameObject.name);
+
+        }
+    }
+        
     void Update()
     {
+
+
+        
 
         if (!IsOwner)
             return;
@@ -85,8 +106,64 @@ public class FishController : NetworkBehaviour
             canMove = false;
             rb.linearVelocity = Vector2.zero;
             StartCoroutine(FloatToSurface());
+
+            StopGame();
         }
     }
+
+    IEnumerator SetObjectainGamemanager()
+    {
+        yield return new WaitForSeconds(2f);
+        if (GameManager.instance != null)
+        {
+            if (IsOwner)
+            {
+                if (GameManager.instance.fish == null)
+                {
+                    GameManager.instance.fish = this;
+                }
+            }
+
+            GameManager.instance.AllFishPlayers.Add(this);
+        }
+    }
+    public void StopGame()
+    {
+        if (IsServer)
+        {
+            ExecuteFunctionLocal();
+            ExecuteFunctionObserversRpc();
+        }
+        else
+        {
+            CallUniversalServerRpc();
+        }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void CallUniversalServerRpc()
+    {
+        ExecuteFunctionLocal();
+
+        ExecuteFunctionObserversRpc();
+    }
+
+    [ObserversRpc]
+    private void ExecuteFunctionObserversRpc()
+    {
+        ExecuteFunctionLocal();
+    }
+
+    private void ExecuteFunctionLocal()
+    {
+        JunkSpawner.instance.canSpawn = false;
+        WormSpawner.instance.canSpawn = false;
+        FishermanController.instance.isCanMove = false;
+        HungerSystem.instance.canDecrease = false;
+        GameManager.instance.fish.canMove = false;
+    }
+
+
 
     private IEnumerator FloatToSurface()
     {
@@ -131,16 +208,23 @@ public class FishController : NetworkBehaviour
     {
         if (other.CompareTag("Worm"))
         {
-            other.gameObject.GetComponent<PolygonCollider2D>().enabled = false;
 
             if (carriedJunk != null)
             {
                 DropJunkToHook(other.gameObject);
                 return;
             }
+
+            gameObject.tag = "CatchdFish";
+
+            other.gameObject.GetComponent<PolygonCollider2D>().enabled = false;
+
+           
+
             canMove = false;
 
             Destroy(other.gameObject);
+
 
             if (!FishermanController.instance.isfisherMan)
             {
@@ -161,7 +245,11 @@ public class FishController : NetworkBehaviour
             {
                 RequestSpawnFishermanServerRpc(other.gameObject);
             }
-            GameManager.instance.LoadMakeFisherMan();
+
+            if(IsOwner)
+            {
+                GameManager.instance.LoadMakeFisherMan();
+            }
         }
 
         if (other.CompareTag("DropedWorm"))
@@ -182,6 +270,7 @@ public class FishController : NetworkBehaviour
             carriedJunk.transform.SetParent(junkHolder);
             carriedJunk.transform.localPosition = Vector3.zero;
         }
+
     }
 
 
@@ -196,6 +285,7 @@ public class FishController : NetworkBehaviour
         Destroy(Worm);
         Destroy(gameObject);
     }
+
 
     [ServerRpc]
     public void RequestSpawnFishermanServerRpc(GameObject worm)
@@ -219,7 +309,20 @@ public class FishController : NetworkBehaviour
         GameManager.instance.fisherman = fm;    
     }
 
-    void DropJunkToHook(GameObject Fish)
+    public void DropJunkToHook(GameObject worm)
+    {
+        if (IsServer)
+        {
+            DropJunkToHookLocal(worm);
+            DropJunkToHookObserversRpc(worm);
+        }
+        else if (IsOwner)
+        {
+            DropJunkToHookServerRpc(worm);
+        }
+    }
+
+    private void DropJunkToHookLocal(GameObject worm)
     {
         Transform wormParent = Hook.instance.wormParent;
 
@@ -232,9 +335,8 @@ public class FishController : NetworkBehaviour
             carriedJunk.transform.SetParent(wormParent);
             carriedJunk.GetComponent<PolygonCollider2D>().enabled = false;
             carriedJunk.transform.localPosition = Vector3.zero;
+            Destroy(worm);
             Debug.Log("Fish dropped junk on hook! Fisherman pranked!");
-            Hook.instance.LoadReturnToRod();
-            Destroy(Fish);
         }
         else
         {
@@ -245,4 +347,105 @@ public class FishController : NetworkBehaviour
 
         carriedJunk = null;
     }
+
+    [ServerRpc(RequireOwnership = true)]
+    private void DropJunkToHookServerRpc(GameObject worm)
+    {
+        DropJunkToHookLocal(worm);
+        DropJunkToHookObserversRpc(worm);
+    }
+
+    [ObserversRpc]
+    private void DropJunkToHookObserversRpc(GameObject worm)
+    {
+        if (IsServer) return; // Server already executed
+        DropJunkToHookLocal(worm);
+    }
+
+
+    //For tag Change 
+    public void ChangeTag(string newTag)
+    {
+        if (gameObject.tag == "CatchdFish")
+        {
+            if (IsServer)
+            {
+                ChangeTagLocal(newTag);
+                ChangeTagObserversRpc(newTag);
+            }
+            else if (IsOwner)
+            {
+                ChangeTagServerRpc(newTag);
+            }
+        }
+    }
+
+    private void ChangeTagLocal(string newTag)
+    {
+
+        gameObject.tag = newTag;
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void ChangeTagServerRpc(string newTag)
+    {
+        // Server पर tag change
+        ChangeTagLocal(newTag);
+
+        // बाकी clients को inform
+        ChangeTagObserversRpc(newTag);
+    }
+
+    [ObserversRpc]
+    private void ChangeTagObserversRpc(string newTag)
+    {
+
+        if (IsServer) return; // server पहले ही बदल चुका है
+        ChangeTagLocal(newTag);
+    }
+
+
+    public void ShowGameOver()
+    {
+        if (IsServer)
+        {
+            ShowGameOverLocal();
+            ShowGameOverObserversRpc();
+        }
+        else if (IsOwner)
+        {
+            ShowGameOverServerRpc();
+        }
+    }
+
+    private void ShowGameOverLocal()
+    {
+        if (IsOwner)
+        {
+            canMove = false;
+            GameManager gm = GameManager.instance;
+            if (gm != null && gm.gameOverText != null && gameObject.tag == "CatchdFish" )
+            {
+                gameObject.GetComponent<PolygonCollider2D>().enabled = false;
+                gm.gameOverPanel.SetActive(true);
+                gm.ShowGameOver("You Lose!");
+            }
+        }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void ShowGameOverServerRpc()
+    {
+        ShowGameOverLocal();           // server पर execute
+        ShowGameOverObserversRpc();    // सभी clients को broadcast
+    }
+
+    [ObserversRpc]
+    private void ShowGameOverObserversRpc()
+    {
+        if (IsServer) return; // server पहले ही execute कर चुका है
+        ShowGameOverLocal();
+    }
+
+
 }

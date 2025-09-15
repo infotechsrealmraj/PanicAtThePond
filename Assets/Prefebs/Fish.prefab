@@ -147,6 +147,7 @@ MonoBehaviour:
   floatSpeed: 2
   junkHolder: {fileID: 4626417357385204189}
   CatchedWorm: {fileID: 0}
+  myColider: {fileID: 8710102643049221350}
   localPlayer: {fileID: 0}
   Autospeed: 3
 --- !u!114 &7404564085461583181

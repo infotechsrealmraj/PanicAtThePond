@@ -1,11 +1,13 @@
 ﻿using FishNet.Object;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class NetworkObjectGenerater : NetworkBehaviour
 {
 
     public GameObject MashPhase;
 
+    public Text clientText;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -13,6 +15,7 @@ public class NetworkObjectGenerater : NetworkBehaviour
         if(IsServer)
         {
             SpawnWorm();
+                clientText.text  = "ClientId = " +  Owner.ClientId;
         }
     }
 

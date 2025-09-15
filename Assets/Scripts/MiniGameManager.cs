@@ -97,14 +97,13 @@ public class MiniGameManager : MonoBehaviour
             yield return null;
         }
 
-        if (active)
             Fail();
     }
 
 
     void Success()
     {
-        FishermanController.instance.isCanMove =  HungerSystem.instance.canDecrease = FishController.instance.canMove = true;
+        FishermanController.instance.isCanMove =  HungerSystem.instance.canDecrease = GameManager.instance.myFish.canMove = true;
         HungerSystem.instance.AddHunger(75f);
         FishController.instance.DestrouWorm();
 
@@ -133,13 +132,11 @@ public class MiniGameManager : MonoBehaviour
     {
         active = false;
         miniGamePanel.transform.localScale = Vector3.zero;
-        //Hook.instance.LoadReturnToRod();
+
         MashPhaseManager.instance.StartMashPhase();
 
         Debug.Log("Mini-game Failed! Fisherman caught the fish!");
         if (timerText != null) timerText.text = "";
-
-
 
     }
     

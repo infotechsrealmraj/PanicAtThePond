@@ -1,5 +1,6 @@
 ﻿using FishNet.Object;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(LineRenderer))]
@@ -187,6 +188,14 @@ public class Hook : NetworkBehaviour
 
         MashPhaseManager.instance.mashPanel.SetActive(false);
 
+        for (int i = 0; i < GameManager.instance.AllFishPlayers.Count; i++)
+        {
+            if (GameManager.instance.AllFishPlayers[i] != null)
+            {
+                GameManager.instance.AllFishPlayers[i].catchByFisherman();
+            }
+        }
+
         Destroy(gameObject); 
     }
 
@@ -194,13 +203,19 @@ public class Hook : NetworkBehaviour
     // ✅ Updated to avoid obsolete warning
     void OnDestroy()
     {
-        FishermanController fc = Object.FindFirstObjectByType<FishermanController>();
-        if (fc != null)
+        Debug.Log("hook OnDestroy1");
+
+        FishermanController fc = FindFirstObjectByType<FishermanController>();
+        if (fc.isfisherMan)
         {
+            Debug.Log("hook OnDestroy2");
             fc.ClearHookReference(this.gameObject);
             fc.CheckWorms();
             fc.isCanMove = true;
-
+           
         }
+
+       
     }
+    
 }

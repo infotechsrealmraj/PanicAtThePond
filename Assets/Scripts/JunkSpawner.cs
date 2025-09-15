@@ -11,8 +11,10 @@ public class JunkSpawner : NetworkBehaviour
     public float xRange = 8f;
     public float yRange = 4f;
 
-    internal bool canSpawn = true;
+    internal bool canSpawn = false;
     public static JunkSpawner instance;
+
+    public List<GameObject> allJunkd = new List<GameObject>();
 
 
 
@@ -24,18 +26,25 @@ public class JunkSpawner : NetworkBehaviour
             instance = this;
     }
 
-    public override void OnStartServer()
+
+    public void LoadSpaenLoop()
     {
         if (IsServer)
         {
-            base.OnStartServer();
-            StartCoroutine(SpawnLoop());
+            Invoke(nameof(SpawnLoop),1f);
         }
     }
 
-    IEnumerator SpawnLoop()
+    void SpawnLoop()
     {
-        while (canSpawn)
+        for (int i = 0; i < allJunkd.Count; i++)
+        {
+            if (allJunkd[i] == null)
+            {
+               allJunkd.Remove(allJunkd[i]);
+            }
+        }
+        if (canSpawn && allJunkd.Count < 3)
         {
             float x = Random.Range(-xRange, xRange);
             float y = yRange;
@@ -44,6 +53,8 @@ public class JunkSpawner : NetworkBehaviour
             GameObject prefab = junkPrefabs[Random.Range(0, junkPrefabs.Length)];
             GameObject newJunk = Instantiate(prefab, pos, Quaternion.identity);
 
+            allJunkd.Add(newJunk);
+
             Spawn(newJunk); // FishNet का network spawn
 
             activeJunks.Add(newJunk);
@@ -51,9 +62,10 @@ public class JunkSpawner : NetworkBehaviour
             Junk junkScript = newJunk.AddComponent<Junk>();
             junkScript.onDestroyed = () => { activeJunks.Remove(newJunk); };
 
-            float delay = Random.Range(minSpawnDelay, maxSpawnDelay);
-            yield return new WaitForSeconds(delay);
         }
+            float delay = Random.Range(minSpawnDelay, maxSpawnDelay);
+        Invoke(nameof(SpawnLoop), delay);
+
     }
 
     public void StopSpawning()

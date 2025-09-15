@@ -1,6 +1,4 @@
-﻿using FishNet.Object;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -51,7 +49,7 @@ public class GameManager : MonoBehaviour
 
     public List<FishController> AllFishPlayers = new List<FishController>();
 
-    public FishController fish;
+    public FishController myFish;
     private void Awake()    
     {
         instance = this;
@@ -139,14 +137,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ShowGameOver(string message)
+    public void ShowGameOverMessage(string message)
     {
-      
-
-        if (gameOverText != null)
-        {
-            gameOverText.text = message;
-        }
+        gameOverText.text = message;
     }
 
     // Restart Button function
@@ -160,4 +153,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("Fisherman assigned on client!");
         fisherman = fc;
     }
+
+
+
 }

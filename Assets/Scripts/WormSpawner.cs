@@ -36,8 +36,6 @@ public class WormSpawner : NetworkBehaviour
     {
         if (!canSpawn) return;
 
-
-
         float x = Random.Range(-xRange, xRange);
         float y = Random.Range(-yRange, 0);
         Vector2 pos = new Vector2(x, y);

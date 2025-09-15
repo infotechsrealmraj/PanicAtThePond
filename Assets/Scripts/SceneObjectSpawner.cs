@@ -1,5 +1,4 @@
 ﻿using FishNet.Object;
-using UnityEngine;
 
 public class SceneObjectSpawner : NetworkBehaviour
 {

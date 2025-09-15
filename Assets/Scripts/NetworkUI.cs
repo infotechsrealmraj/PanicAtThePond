@@ -1,10 +1,7 @@
 ﻿using FishNet.Connection;
 using FishNet.Managing;
 using FishNet.Managing.Scened;
-using FishNet.Managing.Server;
-using FishNet.Object;
 using FishNet.Transporting;
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,11 +21,21 @@ public class NetworkUI : MonoBehaviour
     public GameObject playerPrefab;
     public Transform[] spawnPoints;
 
-    public int playersRequired = 2;
+    internal int playersRequired = 3;
     private bool playersSpawned = false;
     private bool playSceneLoaded = false;
 
 
+    public static NetworkUI instence;
+
+    private void Awake()
+    {
+        if (instence == null)
+
+        {
+            instence = this;
+        }
+    }
     private void OnEnable()
     {
         if (networkManager != null)

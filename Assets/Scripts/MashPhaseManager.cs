@@ -1,5 +1,4 @@
 ﻿using FishNet.Object;
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,8 +22,6 @@ public class MashPhaseManager : NetworkBehaviour
     {
         instance = this;
     }
-
-
 
     IEnumerator Start()
     {
@@ -65,13 +62,20 @@ public class MashPhaseManager : NetworkBehaviour
 
     private void ExecuteFunctionLocal()
     {
-        JunkSpawner.instance.canSpawn = WormSpawner.instance.canSpawn = FishermanController.instance.isCanMove = HungerSystem.instance.canDecrease = false;
+        for (int i = 0; i < GameManager.instance.AllFishPlayers.Count; i++)
+        {
+            if (GameManager.instance.AllFishPlayers[i].isCatchedFish)
+            {
+                JunkSpawner.instance.canSpawn = WormSpawner.instance.canSpawn = FishermanController.instance.isCanMove = HungerSystem.instance.canDecrease = false;
 
-        if (mashPanel != null) mashPanel.SetActive(true);
-        if (mashSlider != null) mashSlider.value = 0f;
+                if (mashPanel != null) mashPanel.SetActive(true);
+                if (mashSlider != null) mashSlider.value = 0f;
 
-        active = true;
-        mashText.text = "MASH SPACE BAR!";
+                active = true;
+                mashText.text = "MASH SPACE BAR!";
+                return;
+            }
+        }
     }
     void Update()
     {
@@ -134,7 +138,7 @@ public class MashPhaseManager : NetworkBehaviour
         if (mashPanel != null) mashPanel.SetActive(false);
 
         if (fishermanWon)
-        {
+        {   
             FishermanController.instance.catchadFishes++;
             Debug.Log("Fish won the mash phase! Escaped hook.");
             Transform myfish2 =  GameObject.FindGameObjectWithTag("CatchdFish").GetComponent<Transform>();
@@ -142,10 +146,6 @@ public class MashPhaseManager : NetworkBehaviour
             myfish2.transform.localPosition = Vector3.zero;
             myfish2.transform.localRotation = Quaternion.Euler(0f, 0f, -90f);
 
-            for (int i = 0; i < GameManager.instance.AllFishPlayers.Count; i++)
-            {
-                GameManager.instance.AllFishPlayers[i].ShowGameOver();
-            }
         }
         else
         {
@@ -153,7 +153,7 @@ public class MashPhaseManager : NetworkBehaviour
            WormSpawner.instance.canSpawn =
            FishermanController.instance.isCanMove =
            HungerSystem.instance.canDecrease =
-           GameManager.instance.fish.canMove = true;
+           GameManager.instance.myFish.canMove = true;
             HungerSystem.instance.AddHunger(75f);
             Debug.Log("Fisherman won the mash phase! Caught fish.");
 
@@ -175,8 +175,6 @@ public class MashPhaseManager : NetworkBehaviour
             Hook.instance.LoadReturnToRod();
         }
     }
-
-
 
     public void CatchFish(int clentID)
     {
@@ -209,18 +207,18 @@ public class MashPhaseManager : NetworkBehaviour
             CatchFishLocal(clentID);
     }
 
-
-
     public void CatchFishLocal(int r)
     {
         if (!FishermanController.instance.isfisherMan)
         {
-            Transform myFish = GameManager.instance.fish.transform;
+            Transform myFish = GameManager.instance.myFish.transform;
             myFish.transform.SetParent(Hook.instance.wormParent.transform);
             myFish.transform.localPosition = Vector3.zero;
             myFish.transform.localRotation = Quaternion.Euler(0f, 0f, -90f);
+            if(IsOwner)
+            {
+                FishermanController.instance.catchedFish = GameManager.instance.myFish;
+            }
         }
     }
-
-
 }

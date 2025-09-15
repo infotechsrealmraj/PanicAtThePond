@@ -21,7 +21,7 @@ public class FishermanController : NetworkBehaviour
     public float maxCastDistance = 10f; // max distance hook can go
 
     [Header("Worms")]
-    internal int worms ;
+    public int worms ;
 
     [Header("Hook")]
     public GameObject hookPrefab;
@@ -41,6 +41,8 @@ public class FishermanController : NetworkBehaviour
     public static FishermanController instance;
 
     public int catchadFishes = 0;
+
+    public FishController catchedFish;
    
     private void Awake()
     {
@@ -52,22 +54,21 @@ public class FishermanController : NetworkBehaviour
         currentRod = leftRod;
         if (castingMeter != null)
             castingMeter.value = 0;
+       
     }
 
     void Update()
     {
         if (isfisherMan)
         {
+            HandleCasting();
             HandleMovement();
             HandleRodSelection();
-            HandleCasting();
         }
     }
     public override void OnStartClient()
     {
         base.OnStartClient();
-
-        // ✅ Client पर spawn होने के बाद GameManager में assign करो
         if (IsOwner || IsClient)
         {
             GameManager.instance.AssignFisherman(this);
@@ -86,9 +87,6 @@ public class FishermanController : NetworkBehaviour
             }
         }
     }
-
-
-    
 
     [ServerRpc(RequireOwnership = false)]
     private void SendMoveInputServerRpc(float moveInput, float deltaTime)
@@ -224,17 +222,17 @@ public class FishermanController : NetworkBehaviour
     // Check worms and print lose message
     public void CheckWorms()
     {
-        if(catchadFishes >= 2)
+        if(catchadFishes >= NetworkUI.instence.playersRequired-1)
         {
             if (isfisherMan)
             {
                 GameManager gm = GameManager.instance;
-                gm.gameOverPanel.SetActive(true);
-                gm.ShowGameOver("You Win!");
-                for (int i = 0; i < GameManager.instance.AllFishPlayers.Count; i++)
+                for (int i = 0; i < gm.AllFishPlayers.Count; i++)
                 {
-                    GameManager.instance.AllFishPlayers[i].ShowGameOver();
+                    gm.AllFishPlayers[i].ShowGameOver(false);
                 }
+                gm.gameOverPanel.SetActive(true);
+                gm.ShowGameOverMessage("Fisherman Win!");
                 WormSpawner.instance.canSpawn = isCanMove = HungerSystem.instance.canDecrease = FishController.instance.canMove = false;
 
                 // Optional: stop all fishing actions
@@ -245,16 +243,23 @@ public class FishermanController : NetworkBehaviour
             return;
         }
 
+
+
         if (worms <= 0)
         {
             if (isfisherMan)
             {
-                if (GameManager.instance != null && GameManager.instance.gameOverText != null)
-                {
-                    GameManager.instance.ShowGameOver("Fisherman Lose!\nFishes Win!");
-                }
-                WormSpawner.instance.canSpawn = isCanMove = HungerSystem.instance.canDecrease = FishController.instance.canMove = false;
+                Debug.Log("zzzCheckWormsCheckWorms");
+                GameManager gm = GameManager.instance;
 
+                for (int i = 0; i < gm.AllFishPlayers.Count; i++)
+                {
+                    gm.AllFishPlayers[i].ShowGameOver(true);
+                }
+                gm.gameOverPanel.SetActive(true);
+
+                gm.ShowGameOverMessage("Fisherman Lose!");
+                WormSpawner.instance.canSpawn = isCanMove = HungerSystem.instance.canDecrease = FishController.instance.canMove = false;
                 // Optional: stop all fishing actions
                 leftHook = false;
                 rightHook = false;

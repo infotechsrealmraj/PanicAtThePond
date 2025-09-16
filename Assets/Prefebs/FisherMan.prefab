@@ -111,16 +111,20 @@ MonoBehaviour:
   moveSpeed: 5
   leftRod: {fileID: 7193815615569484503}
   rightRod: {fileID: 6579769212213636874}
+  currentRod: {fileID: 0}
   castKey1: 120
   castKey2: 118
   castingMeter: {fileID: 0}
   meterSpeed: 2
-  maxCastDistance: 10
+  maxCastDistance: 100
+  worms: 0
   hookPrefab: {fileID: 2825920470062649857, guid: 7425abcbde3b9664da206dab5c02a51a, type: 3}
-  leftHook: {fileID: 0}
-  rightHook: {fileID: 0}
-  minX: -8
-  maxX: 8
+  leftHook: 0
+  rightHook: 0
+  minX: -4.5
+  maxX: 4.5
+  catchadFishes: 0
+  catchedFish: {fileID: 0}
 --- !u!114 &-370242876687570616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -212,7 +216,7 @@ MonoBehaviour:
   _spectatorInterpolation: 2
   _enableTeleport: 0
   _teleportThreshold: 1
-  <PrefabId>k__BackingField: 9
+  <PrefabId>k__BackingField: 10
   <SpawnableCollectionId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 10497598245236294519
   <SceneId>k__BackingField: 0

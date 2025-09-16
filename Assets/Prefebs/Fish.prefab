@@ -142,10 +142,12 @@ MonoBehaviour:
   hunger: 100
   speed: 5
   minBounds: {x: -8, y: -4}
-  maxBounds: {x: 8, y: 1}
+  maxBounds: {x: 8, y: 4}
   canMove: 1
   floatSpeed: 2
+  isCatchedFish: 0
   junkHolder: {fileID: 4626417357385204189}
+  carriedJunk: {fileID: 0}
   CatchedWorm: {fileID: 0}
   myColider: {fileID: 8710102643049221350}
   localPlayer: {fileID: 0}

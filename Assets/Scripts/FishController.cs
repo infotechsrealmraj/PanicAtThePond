@@ -1,4 +1,5 @@
-﻿using FishNet.Object;
+﻿using FishNet.Connection;
+using FishNet.Object;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
@@ -27,7 +28,7 @@ public class FishController : NetworkBehaviour
     public bool isCatchedFish = false;
 
     public Transform junkHolder;   
-    private GameObject carriedJunk;
+    public GameObject carriedJunk;
 
     public GameObject CatchedWorm;
 
@@ -98,7 +99,7 @@ public class FishController : NetworkBehaviour
         transform.position = clampedPos;
 
         // Check hunger
-        if (!isDead && HungerSystem.instance != null && HungerSystem.instance.hungerBar.value <= 0)
+        if (!isDead && HungerSystem.instance.hungerBar.value <= 0)
         {
             isDead = true;
             canMove = false;
@@ -124,40 +125,15 @@ public class FishController : NetworkBehaviour
             GameManager.instance.AllFishPlayers.Add(this);
         }
     }
-    public void StopGame()
-    {
-        if (IsServer)
-        {
-            ExecuteFunctionLocal();
-            ExecuteFunctionObserversRpc();
-        }
-        else
-        {
-            CallUniversalServerRpc();
-        }
-    }
+ 
 
     [ServerRpc(RequireOwnership = false)]
-    private void CallUniversalServerRpc()
-    {
-        ExecuteFunctionLocal();
-
-        ExecuteFunctionObserversRpc();
-    }
-
-    [ObserversRpc]
-    private void ExecuteFunctionObserversRpc()
-    {
-        ExecuteFunctionLocal();
-    }
-
-    private void ExecuteFunctionLocal()
+    private void StopGame()
     {
         JunkSpawner.instance.canSpawn = false;
         WormSpawner.instance.canSpawn = false;
         FishermanController.instance.isCanMove = false;
         HungerSystem.instance.canDecrease = false;
-        GameManager.instance.myFish.canMove = false;
     }
 
 
@@ -179,7 +155,11 @@ public class FishController : NetworkBehaviour
 
         if (GameManager.instance != null && GameManager.instance.gameOverText != null)
         {
-            GameManager.instance.ShowGameOverMessage("Fish Dead!\nFisherman Wins!");
+            canMove = false;
+            GameManager gm = GameManager.instance;
+            myColider.enabled = false;
+            gm.gameOverPanel.SetActive(true);
+            gm.ShowGameOverMessage("You Lose!");
         }
     }
 
@@ -214,7 +194,7 @@ public class FishController : NetworkBehaviour
 
             gameObject.tag = "CatchdFish";
 
-            if(IsOwner || FishermanController.instance.isfisherMan)
+            if(IsOwner)
             {
                 isCatchedFish = true;
             }
@@ -263,11 +243,12 @@ public class FishController : NetworkBehaviour
             Destroy(other.gameObject);
         }
 
-        if (carriedJunk != null)
+        if (carriedJunk == null)
         {
             if (other.CompareTag("Junk"))
-            {
+            {   
                 carriedJunk = other.gameObject;
+                carriedJunk.GetComponent<PolygonCollider2D>().enabled = false;
                 carriedJunk.transform.SetParent(junkHolder);
                 carriedJunk.transform.localPosition = Vector3.zero;
             }
@@ -301,7 +282,7 @@ public class FishController : NetworkBehaviour
         JunkSpawner.instance.canSpawn = true;
         JunkSpawner.instance.LoadSpaenLoop();
         var fishermanObj = Instantiate(GameManager.instance.fishermanPrefab,
-            new Vector3(0f, 1.75f, 0f), Quaternion.identity);
+            new Vector3(0f, 8.75f, 0f), Quaternion.identity);
         Spawn(fishermanObj.gameObject);
     }
 
@@ -346,7 +327,10 @@ public class FishController : NetworkBehaviour
             Debug.LogWarning("wormParent not found inside Hook!");
         }
 
-        Hook.instance.LoadReturnToRod();
+        if (IsServer)
+        {
+            Hook.instance.LoadReturnToRod();
+        }
 
         carriedJunk = null;
     }
@@ -402,7 +386,6 @@ public class FishController : NetworkBehaviour
     [ObserversRpc]
     private void ChangeTagObserversRpc(string newTag)
     {
-
         if (IsServer) return; // server पहले ही बदल चुका है
         ChangeTagLocal(newTag);
     }
@@ -454,17 +437,44 @@ public class FishController : NetworkBehaviour
     }
 
 
-    //When fish is hooked and catchedf by Fisherma , that time called this 
-    public void catchByFisherman()
-    {
 
-        if (gameObject.tag == "CatchdFish" && IsOwner)
+    public void CatchByFisherman()
+    {
+        if (IsServer)
         {
-            canMove = false;
-            GameManager gm = GameManager.instance;
-            myColider.enabled = false;
-            gm.gameOverPanel.SetActive(true);
-            gm.ShowGameOverMessage("You Lose!");
+            CatchByFishermanObserversRpc();
+        }
+        else
+        {
+            CatchByFishermanServerRpc();
+        }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void CatchByFishermanServerRpc()
+    {
+        CatchByFishermanObserversRpc();
+    }
+
+    [ObserversRpc]
+    private void CatchByFishermanObserversRpc()
+    {
+        CatchByFishermanLocal();
+    }
+
+    //When fish is hooked and catchedf by Fisherma , that time called this 
+    public void CatchByFishermanLocal()
+    {
+        if (IsOwner)
+        {
+            if (gameObject.tag == "CatchdFish")
+            {
+                canMove = false;
+                GameManager gm = GameManager.instance;
+                myColider.enabled = false;
+                gm.gameOverPanel.SetActive(true);
+                gm.ShowGameOverMessage("You Lose!");
+            }
         }
     }
 }

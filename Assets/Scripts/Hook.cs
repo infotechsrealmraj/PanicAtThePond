@@ -1,6 +1,5 @@
 ﻿using FishNet.Object;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(LineRenderer))]
@@ -16,6 +15,7 @@ public class Hook : NetworkBehaviour
 
     private bool hasWorm = false;
     private bool isReturning = false;
+    internal bool isGoing = true;
 
     public float minDistance = 2f;   // Minimum hook drop distance
     public float maxDistance = 15f;  // Maximum hook drop distance
@@ -54,7 +54,7 @@ public class Hook : NetworkBehaviour
     void Update()
     {
         ShowRope();
-        if (Input.GetMouseButtonDown(1) && !isReturning  && FishermanController.instance.isfisherMan) // 1 = right mouse button
+        if (Input.GetMouseButtonDown(1) && !isReturning && !isGoing && FishermanController.instance.isfisherMan) // 1 = right mouse button
         {
             LoadReturnToRod();
         }
@@ -105,6 +105,8 @@ public class Hook : NetworkBehaviour
             yield return null;
         }
 
+        isGoing = false;
+
         if (wormInstance != null)
         {
           wormInstance.GetComponent<PolygonCollider2D>().enabled = true;
@@ -127,13 +129,8 @@ public class Hook : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void LoadReturnToRod()
     {
-        StartCoroutine(ReturnToRod());
+        StartCoroutine(ReturnToRod());  
     }
-
-
-  
-
-
     public void DropWorm()
     {
         if (IsServer)
@@ -188,11 +185,22 @@ public class Hook : NetworkBehaviour
 
         MashPhaseManager.instance.mashPanel.SetActive(false);
 
+        if(IsServer)
+        {
+            Debug.Log("Called Srver Side");
+        }
+        else
+        {
+            Debug.Log("Called client Side");
+
+        }
+
+
         for (int i = 0; i < GameManager.instance.AllFishPlayers.Count; i++)
         {
             if (GameManager.instance.AllFishPlayers[i] != null)
             {
-                GameManager.instance.AllFishPlayers[i].catchByFisherman();
+                GameManager.instance.AllFishPlayers[i].CatchByFishermanLocal();
             }
         }
 
@@ -203,19 +211,60 @@ public class Hook : NetworkBehaviour
     // ✅ Updated to avoid obsolete warning
     void OnDestroy()
     {
-        Debug.Log("hook OnDestroy1");
 
         FishermanController fc = FindFirstObjectByType<FishermanController>();
         if (fc.isfisherMan)
         {
-            Debug.Log("hook OnDestroy2");
             fc.ClearHookReference(this.gameObject);
             fc.CheckWorms();
             fc.isCanMove = true;
-           
         }
-
-       
     }
-    
+
+    private void ExecuteShowGameOver()
+    {
+        ShowGameOver();
+    }
+
+    // 🔹 अगर client से call किया तो पहले server पर जाएगा
+    [ServerRpc(RequireOwnership = false)]
+    private void ShowGameOverServerRpc()
+    {
+        ExecuteShowGameOver();          // server पर चलेगा
+        ShowGameOverObserversRpc();     // फिर सब clients पर चलेगा
+    }
+
+    // 🔹 server सभी clients को बोलेगा चलाने के लिए
+    [ObserversRpc]
+    private void ShowGameOverObserversRpc()
+    {
+        ExecuteShowGameOver();
+    }
+
+    // 🔹 Public wrapper → चाहे server call करे या client
+    public void CallShowGameOver()
+    {
+        if (IsServer)
+        {
+            ExecuteShowGameOver();          // server पर तुरंत
+            ShowGameOverObserversRpc();     // clients पर
+        }
+        else
+        {
+            ShowGameOverServerRpc();        // client server को बोलेगा
+        }
+    }
+
+
+    public void ShowGameOver()
+    {
+        for (int i = 0; i < GameManager.instance.AllFishPlayers.Count; i++)
+        {
+            if (GameManager.instance.AllFishPlayers[i] != null)
+            {
+                GameManager.instance.AllFishPlayers[i].CatchByFishermanLocal();
+            }
+        }
+    }
+
 }

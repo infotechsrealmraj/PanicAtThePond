@@ -11,7 +11,7 @@ public class JunkSpawner : NetworkBehaviour
     public float xRange = 8f;
     public float yRange = 4f;
 
-    internal bool canSpawn = false;
+    public bool canSpawn = false;
     public static JunkSpawner instance;
 
     public List<GameObject> allJunkd = new List<GameObject>();

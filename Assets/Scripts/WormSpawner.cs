@@ -8,7 +8,7 @@ public class WormSpawner : NetworkBehaviour
     public float xRange = 8f;
     public float yRange = 4f;
 
-    internal bool canSpawn = true;
+    public bool canSpawn = true;
 
     public static WormSpawner instance;
 
@@ -34,15 +34,16 @@ public class WormSpawner : NetworkBehaviour
 
     void SpawnWorm()
     {
-        if (!canSpawn) return;
+        if (canSpawn)
+        {
+            float x = Random.Range(-xRange, xRange);
+            float y = Random.Range(-yRange, yRange);
+            Vector2 pos = new Vector2(x, y);
 
-        float x = Random.Range(-xRange, xRange);
-        float y = Random.Range(-yRange, 0);
-        Vector2 pos = new Vector2(x, y);
-
-        GameObject worm = Instantiate(wormPrefab, pos, Quaternion.identity);
-        if (IsServer)
-            Spawn(worm);
+            GameObject worm = Instantiate(wormPrefab, pos, Quaternion.identity);
+            if (IsServer)
+                Spawn(worm);
+        }
 
         Invoke("SpawnWorm", Random.Range(2, 5));
 
@@ -54,7 +55,7 @@ public class WormSpawner : NetworkBehaviour
         if (!canSpawn) return;
 
         float x = Random.Range(-xRange, xRange);
-        float y = Random.Range(-yRange, 0);
+        float y = Random.Range(-yRange, yRange);
         Vector2 pos = new Vector2(x, y);
 
         GameObject goldWorm = Instantiate(goldWormPrefab, pos, Quaternion.identity);

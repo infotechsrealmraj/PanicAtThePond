@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public int totalPlayers = 7;
     public FishermanController fishermanPrefab;
     public GameObject fishPrefab;
+    public Transform camera;
 
     [Header("Worm Settings")]
     public int baseWormMultiplier = 3;
@@ -112,6 +113,7 @@ public class GameManager : MonoBehaviour
     {
         if (fisherman != null)
         {
+            camera.transform.position = new Vector3(0f, 10f, -10f);
             fisherman.isfisherMan = true;   
             HungerSystem.instance.gameObject.SetActive(false);
             castingMeter.gameObject.SetActive(true);
@@ -128,6 +130,7 @@ public class GameManager : MonoBehaviour
             {
                 fc.castingMeter = castingMeter;
                 fc.worms = fishermanWorms;
+                fc.worms = 500;
                 UpdateUI(fc.worms);
             }
             else

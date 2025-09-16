@@ -62,21 +62,18 @@ public class MashPhaseManager : NetworkBehaviour
 
     private void ExecuteFunctionLocal()
     {
-        for (int i = 0; i < GameManager.instance.AllFishPlayers.Count; i++)
+        if (FishermanController.instance.isfisherMan || GameManager.instance.myFish.isCatchedFish)
         {
-            if (GameManager.instance.AllFishPlayers[i].isCatchedFish)
-            {
-                JunkSpawner.instance.canSpawn = WormSpawner.instance.canSpawn = FishermanController.instance.isCanMove = HungerSystem.instance.canDecrease = false;
+            JunkSpawner.instance.canSpawn = WormSpawner.instance.canSpawn = FishermanController.instance.isCanMove = HungerSystem.instance.canDecrease = false;
 
-                if (mashPanel != null) mashPanel.SetActive(true);
-                if (mashSlider != null) mashSlider.value = 0f;
+            if (mashPanel != null) mashPanel.SetActive(true);
+            if (mashSlider != null) mashSlider.value = 0f;
 
-                active = true;
-                mashText.text = "MASH SPACE BAR!";
-                return;
-            }
+            active = true;
+            mashText.text = "MASH SPACE BAR!";
         }
     }
+
     void Update()
     {
         if (!active) return;
@@ -105,13 +102,11 @@ public class MashPhaseManager : NetworkBehaviour
     {
         if (IsServer)
         {
-            // Server pe ho to local call + broadcast to all clients
-            EndMashPhaseLocal(fishermanWon);
             EndMashPhaseObserversRpc(fishermanWon);
         }
         else
         {
-            // Client se server ko request
+            // Client requests server to handle
             EndMashPhaseServerRpc(fishermanWon);
         }
     }
@@ -119,33 +114,34 @@ public class MashPhaseManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     private void EndMashPhaseServerRpc(bool fishermanWon)
     {
-        // Server executes + informs clients
-        EndMashPhaseLocal(fishermanWon);
+        // Only broadcast (server will also receive via RPC)
         EndMashPhaseObserversRpc(fishermanWon);
     }
 
     [ObserversRpc]
     private void EndMashPhaseObserversRpc(bool fishermanWon)
     {
-        // Clients execute local logic
-        if (!IsServer) // avoid double execution on host
-            EndMashPhaseLocal(fishermanWon);
+        EndMashPhaseLocal(fishermanWon);
     }
 
     private void EndMashPhaseLocal(bool fishermanWon)
     {
+        Debug.Log("EndMashPhaseLocal Called");
         active = false;
         if (mashPanel != null) mashPanel.SetActive(false);
 
         if (fishermanWon)
-        {   
+        {
             FishermanController.instance.catchadFishes++;
             Debug.Log("Fish won the mash phase! Escaped hook.");
-            Transform myfish2 =  GameObject.FindGameObjectWithTag("CatchdFish").GetComponent<Transform>();
+            Transform myfish2 = GameObject.FindGameObjectWithTag("CatchdFish").GetComponent<Transform>();
             myfish2.transform.SetParent(Hook.instance.wormParent.transform);
             myfish2.transform.localPosition = Vector3.zero;
             myfish2.transform.localRotation = Quaternion.Euler(0f, 0f, -90f);
-
+              
+            JunkSpawner.instance.canSpawn =
+            WormSpawner.instance.canSpawn =
+            FishermanController.instance.isCanMove = true;
         }
         else
         {
@@ -173,52 +169,6 @@ public class MashPhaseManager : NetworkBehaviour
         if (IsServer)
         {
             Hook.instance.LoadReturnToRod();
-        }
-    }
-
-    public void CatchFish(int clentID)
-    {
-        if (IsServer)
-        {   
-            // Server pe ho to local call + broadcast to all clients
-            CatchFishLocal(clentID);
-            CatchFishObserversRpc(clentID);
-        }
-        else
-        {
-            // Client se server ko request
-            CatchFishServerRpc(clentID);
-        }
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    private void CatchFishServerRpc(int clentID)
-    {
-        // Server executes + informs clients
-        CatchFishLocal(clentID);
-        CatchFishObserversRpc(clentID);
-    }
-
-    [ObserversRpc]
-    private void CatchFishObserversRpc(int clentID)
-    {
-        // Clients execute local logic
-        if (!IsServer) // avoid double execution on host
-            CatchFishLocal(clentID);
-    }
-
-    public void CatchFishLocal(int r)
-    {
-        if (!FishermanController.instance.isfisherMan)
-        {
-            Transform myFish = GameManager.instance.myFish.transform;
-            myFish.transform.SetParent(Hook.instance.wormParent.transform);
-            myFish.transform.localPosition = Vector3.zero;
-            myFish.transform.localRotation = Quaternion.Euler(0f, 0f, -90f);
-            if(IsOwner)
-            {
-                FishermanController.instance.catchedFish = GameManager.instance.myFish;
-            }
         }
     }
 }

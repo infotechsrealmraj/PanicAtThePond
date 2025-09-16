@@ -126,7 +126,7 @@ public class FishermanController : NetworkBehaviour
         }
 
         // Release → cast hook with meter value
-        if (worms > 0)
+        if (500 > 0)
         {
             if (isCasting && (!Input.GetKey(castKey1) || !Input.GetKey(castKey2)))
             {

@@ -1,0 +1,342 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\Company\\PanicAtThePond\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{D3EF2986-CC70-9520-E1EF-C5C56B8CBD7B}|FishNet.Runtime.csproj|D:\\Company\\PanicAtThePond\\assets\\fishnet-main\\assets\\fishnet\\runtime\\managing\\logging\\levelloggingconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D3EF2986-CC70-9520-E1EF-C5C56B8CBD7B}|FishNet.Runtime.csproj|solutionrelative:assets\\fishnet-main\\assets\\fishnet\\runtime\\managing\\logging\\levelloggingconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A566AD8D-FE43-8387-CF2D-4C0ED9809916}|Assembly-CSharp.csproj|d:\\company\\panicatthepond\\assets\\scripts\\fishcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A566AD8D-FE43-8387-CF2D-4C0ED9809916}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\fishcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D3EF2986-CC70-9520-E1EF-C5C56B8CBD7B}|FishNet.Runtime.csproj|D:\\Company\\PanicAtThePond\\assets\\fishnet-main\\assets\\fishnet\\runtime\\managing\\networkmanager.logging.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D3EF2986-CC70-9520-E1EF-C5C56B8CBD7B}|FishNet.Runtime.csproj|solutionrelative:assets\\fishnet-main\\assets\\fishnet\\runtime\\managing\\networkmanager.logging.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D3EF2986-CC70-9520-E1EF-C5C56B8CBD7B}|FishNet.Runtime.csproj|D:\\Company\\PanicAtThePond\\assets\\fishnet-main\\assets\\fishnet\\runtime\\managing\\networkmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D3EF2986-CC70-9520-E1EF-C5C56B8CBD7B}|FishNet.Runtime.csproj|solutionrelative:assets\\fishnet-main\\assets\\fishnet\\runtime\\managing\\networkmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A566AD8D-FE43-8387-CF2D-4C0ED9809916}|Assembly-CSharp.csproj|D:\\Company\\PanicAtThePond\\assets\\scripts\\hostmigrationmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A566AD8D-FE43-8387-CF2D-4C0ED9809916}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\hostmigrationmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A566AD8D-FE43-8387-CF2D-4C0ED9809916}|Assembly-CSharp.csproj|D:\\Company\\PanicAtThePond\\assets\\scripts\\networkui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A566AD8D-FE43-8387-CF2D-4C0ED9809916}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\networkui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A566AD8D-FE43-8387-CF2D-4C0ED9809916}|Assembly-CSharp.csproj|D:\\Company\\PanicAtThePond\\assets\\scripts\\gamemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A566AD8D-FE43-8387-CF2D-4C0ED9809916}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\gamemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A566AD8D-FE43-8387-CF2D-4C0ED9809916}|Assembly-CSharp.csproj|D:\\Company\\PanicAtThePond\\assets\\scripts\\fishermancontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A566AD8D-FE43-8387-CF2D-4C0ED9809916}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\fishermancontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A566AD8D-FE43-8387-CF2D-4C0ED9809916}|Assembly-CSharp.csproj|D:\\Company\\PanicAtThePond\\assets\\scripts\\wormspawner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A566AD8D-FE43-8387-CF2D-4C0ED9809916}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\wormspawner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A566AD8D-FE43-8387-CF2D-4C0ED9809916}|Assembly-CSharp.csproj|D:\\Company\\PanicAtThePond\\assets\\scripts\\wormautoparent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A566AD8D-FE43-8387-CF2D-4C0ED9809916}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\wormautoparent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A566AD8D-FE43-8387-CF2D-4C0ED9809916}|Assembly-CSharp.csproj|D:\\Company\\PanicAtThePond\\assets\\scripts\\sceneobjectspawner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A566AD8D-FE43-8387-CF2D-4C0ED9809916}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\sceneobjectspawner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A566AD8D-FE43-8387-CF2D-4C0ED9809916}|Assembly-CSharp.csproj|D:\\Company\\PanicAtThePond\\assets\\scripts\\roleswitcher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A566AD8D-FE43-8387-CF2D-4C0ED9809916}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\roleswitcher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A566AD8D-FE43-8387-CF2D-4C0ED9809916}|Assembly-CSharp.csproj|D:\\Company\\PanicAtThePond\\assets\\scripts\\playerobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A566AD8D-FE43-8387-CF2D-4C0ED9809916}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\playerobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A566AD8D-FE43-8387-CF2D-4C0ED9809916}|Assembly-CSharp.csproj|D:\\Company\\PanicAtThePond\\assets\\scripts\\minigamemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A566AD8D-FE43-8387-CF2D-4C0ED9809916}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\minigamemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A566AD8D-FE43-8387-CF2D-4C0ED9809916}|Assembly-CSharp.csproj|D:\\Company\\PanicAtThePond\\assets\\scripts\\maxplayerauthenticator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A566AD8D-FE43-8387-CF2D-4C0ED9809916}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\maxplayerauthenticator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A566AD8D-FE43-8387-CF2D-4C0ED9809916}|Assembly-CSharp.csproj|D:\\Company\\PanicAtThePond\\assets\\scripts\\mashphasemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A566AD8D-FE43-8387-CF2D-4C0ED9809916}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\mashphasemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A566AD8D-FE43-8387-CF2D-4C0ED9809916}|Assembly-CSharp.csproj|D:\\Company\\PanicAtThePond\\assets\\scripts\\junkspawner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A566AD8D-FE43-8387-CF2D-4C0ED9809916}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\junkspawner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A566AD8D-FE43-8387-CF2D-4C0ED9809916}|Assembly-CSharp.csproj|D:\\Company\\PanicAtThePond\\assets\\scripts\\hungersystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A566AD8D-FE43-8387-CF2D-4C0ED9809916}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\hungersystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A566AD8D-FE43-8387-CF2D-4C0ED9809916}|Assembly-CSharp.csproj|D:\\Company\\PanicAtThePond\\assets\\scripts\\hook.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A566AD8D-FE43-8387-CF2D-4C0ED9809916}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\hook.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A566AD8D-FE43-8387-CF2D-4C0ED9809916}|Assembly-CSharp.csproj|D:\\Company\\PanicAtThePond\\assets\\scripts\\gamescaler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A566AD8D-FE43-8387-CF2D-4C0ED9809916}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\gamescaler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "NetworkManager.cs",
+              "DocumentMoniker": "D:\\Company\\PanicAtThePond\\Assets\\FishNet-main\\Assets\\FishNet\\Runtime\\Managing\\NetworkManager.cs",
+              "RelativeDocumentMoniker": "Assets\\FishNet-main\\Assets\\FishNet\\Runtime\\Managing\\NetworkManager.cs",
+              "ToolTip": "D:\\Company\\PanicAtThePond\\Assets\\FishNet-main\\Assets\\FishNet\\Runtime\\Managing\\NetworkManager.cs",
+              "RelativeToolTip": "Assets\\FishNet-main\\Assets\\FishNet\\Runtime\\Managing\\NetworkManager.cs",
+              "ViewState": "AgIAAPUAAAAAAAAAAAAjwAkBAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-17T07:08:41.833Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "NetworkManager.Logging.cs",
+              "DocumentMoniker": "D:\\Company\\PanicAtThePond\\Assets\\FishNet-main\\Assets\\FishNet\\Runtime\\Managing\\NetworkManager.Logging.cs",
+              "RelativeDocumentMoniker": "Assets\\FishNet-main\\Assets\\FishNet\\Runtime\\Managing\\NetworkManager.Logging.cs",
+              "ToolTip": "D:\\Company\\PanicAtThePond\\Assets\\FishNet-main\\Assets\\FishNet\\Runtime\\Managing\\NetworkManager.Logging.cs",
+              "RelativeToolTip": "Assets\\FishNet-main\\Assets\\FishNet\\Runtime\\Managing\\NetworkManager.Logging.cs",
+              "ViewState": "AgIAAEIAAAAAAAAAAAAjwFEAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-17T07:08:37.466Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "HostMigrationManager.cs",
+              "DocumentMoniker": "D:\\Company\\PanicAtThePond\\Assets\\Scripts\\HostMigrationManager.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\HostMigrationManager.cs",
+              "ToolTip": "D:\\Company\\PanicAtThePond\\Assets\\Scripts\\HostMigrationManager.cs",
+              "RelativeToolTip": "Assets\\Scripts\\HostMigrationManager.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAAABAAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-17T06:52:30.335Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "LevelLoggingConfiguration.cs",
+              "DocumentMoniker": "D:\\Company\\PanicAtThePond\\Assets\\FishNet-main\\Assets\\FishNet\\Runtime\\Managing\\Logging\\LevelLoggingConfiguration.cs",
+              "RelativeDocumentMoniker": "Assets\\FishNet-main\\Assets\\FishNet\\Runtime\\Managing\\Logging\\LevelLoggingConfiguration.cs",
+              "ToolTip": "D:\\Company\\PanicAtThePond\\Assets\\FishNet-main\\Assets\\FishNet\\Runtime\\Managing\\Logging\\LevelLoggingConfiguration.cs",
+              "RelativeToolTip": "Assets\\FishNet-main\\Assets\\FishNet\\Runtime\\Managing\\Logging\\LevelLoggingConfiguration.cs",
+              "ViewState": "AgIAAIoAAAAAAAAAAAAuwJMAAAA4AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-17T07:02:49.006Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "WormSpawner.cs",
+              "DocumentMoniker": "D:\\Company\\PanicAtThePond\\Assets\\Scripts\\WormSpawner.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\WormSpawner.cs",
+              "ToolTip": "D:\\Company\\PanicAtThePond\\Assets\\Scripts\\WormSpawner.cs",
+              "RelativeToolTip": "Assets\\Scripts\\WormSpawner.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-17T06:12:05.698Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "WormAutoParent.cs",
+              "DocumentMoniker": "D:\\Company\\PanicAtThePond\\Assets\\Scripts\\WormAutoParent.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\WormAutoParent.cs",
+              "ToolTip": "D:\\Company\\PanicAtThePond\\Assets\\Scripts\\WormAutoParent.cs",
+              "RelativeToolTip": "Assets\\Scripts\\WormAutoParent.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-17T06:12:05.424Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "SceneObjectSpawner.cs",
+              "DocumentMoniker": "D:\\Company\\PanicAtThePond\\Assets\\Scripts\\SceneObjectSpawner.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\SceneObjectSpawner.cs",
+              "ToolTip": "D:\\Company\\PanicAtThePond\\Assets\\Scripts\\SceneObjectSpawner.cs",
+              "RelativeToolTip": "Assets\\Scripts\\SceneObjectSpawner.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-17T06:12:05.112Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "RoleSwitcher.cs",
+              "DocumentMoniker": "D:\\Company\\PanicAtThePond\\Assets\\Scripts\\RoleSwitcher.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\RoleSwitcher.cs",
+              "ToolTip": "D:\\Company\\PanicAtThePond\\Assets\\Scripts\\RoleSwitcher.cs",
+              "RelativeToolTip": "Assets\\Scripts\\RoleSwitcher.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-17T06:12:04.684Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "PlayerObject.cs",
+              "DocumentMoniker": "D:\\Company\\PanicAtThePond\\Assets\\Scripts\\PlayerObject.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\PlayerObject.cs",
+              "ToolTip": "D:\\Company\\PanicAtThePond\\Assets\\Scripts\\PlayerObject.cs",
+              "RelativeToolTip": "Assets\\Scripts\\PlayerObject.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-17T06:12:04.36Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "NetworkUI.cs",
+              "DocumentMoniker": "D:\\Company\\PanicAtThePond\\Assets\\Scripts\\NetworkUI.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\NetworkUI.cs",
+              "ToolTip": "D:\\Company\\PanicAtThePond\\Assets\\Scripts\\NetworkUI.cs",
+              "RelativeToolTip": "Assets\\Scripts\\NetworkUI.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAACAAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-17T06:12:03.876Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "MiniGameManager.cs",
+              "DocumentMoniker": "D:\\Company\\PanicAtThePond\\Assets\\Scripts\\MiniGameManager.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\MiniGameManager.cs",
+              "ToolTip": "D:\\Company\\PanicAtThePond\\Assets\\Scripts\\MiniGameManager.cs",
+              "RelativeToolTip": "Assets\\Scripts\\MiniGameManager.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-17T06:12:03.561Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "MaxPlayerAuthenticator.cs",
+              "DocumentMoniker": "D:\\Company\\PanicAtThePond\\Assets\\Scripts\\MaxPlayerAuthenticator.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\MaxPlayerAuthenticator.cs",
+              "ToolTip": "D:\\Company\\PanicAtThePond\\Assets\\Scripts\\MaxPlayerAuthenticator.cs",
+              "RelativeToolTip": "Assets\\Scripts\\MaxPlayerAuthenticator.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-17T06:12:03.17Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "MashPhaseManager.cs",
+              "DocumentMoniker": "D:\\Company\\PanicAtThePond\\Assets\\Scripts\\MashPhaseManager.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\MashPhaseManager.cs",
+              "ToolTip": "D:\\Company\\PanicAtThePond\\Assets\\Scripts\\MashPhaseManager.cs",
+              "RelativeToolTip": "Assets\\Scripts\\MashPhaseManager.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-17T06:12:02.861Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "JunkSpawner.cs",
+              "DocumentMoniker": "D:\\Company\\PanicAtThePond\\Assets\\Scripts\\JunkSpawner.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\JunkSpawner.cs",
+              "ToolTip": "D:\\Company\\PanicAtThePond\\Assets\\Scripts\\JunkSpawner.cs",
+              "RelativeToolTip": "Assets\\Scripts\\JunkSpawner.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-17T06:12:02.519Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "HungerSystem.cs",
+              "DocumentMoniker": "D:\\Company\\PanicAtThePond\\Assets\\Scripts\\HungerSystem.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\HungerSystem.cs",
+              "ToolTip": "D:\\Company\\PanicAtThePond\\Assets\\Scripts\\HungerSystem.cs",
+              "RelativeToolTip": "Assets\\Scripts\\HungerSystem.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-17T06:12:01.603Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "Hook.cs",
+              "DocumentMoniker": "D:\\Company\\PanicAtThePond\\Assets\\Scripts\\Hook.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Hook.cs",
+              "ToolTip": "D:\\Company\\PanicAtThePond\\Assets\\Scripts\\Hook.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Hook.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-17T06:12:00.872Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "GameScaler.cs",
+              "DocumentMoniker": "D:\\Company\\PanicAtThePond\\Assets\\Scripts\\GameScaler.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\GameScaler.cs",
+              "ToolTip": "D:\\Company\\PanicAtThePond\\Assets\\Scripts\\GameScaler.cs",
+              "RelativeToolTip": "Assets\\Scripts\\GameScaler.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-17T06:12:00.011Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "GameManager.cs",
+              "DocumentMoniker": "D:\\Company\\PanicAtThePond\\Assets\\Scripts\\GameManager.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\GameManager.cs",
+              "ToolTip": "D:\\Company\\PanicAtThePond\\Assets\\Scripts\\GameManager.cs",
+              "RelativeToolTip": "Assets\\Scripts\\GameManager.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-17T06:11:57.55Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "FishermanController.cs",
+              "DocumentMoniker": "D:\\Company\\PanicAtThePond\\Assets\\Scripts\\FishermanController.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\FishermanController.cs",
+              "ToolTip": "D:\\Company\\PanicAtThePond\\Assets\\Scripts\\FishermanController.cs",
+              "RelativeToolTip": "Assets\\Scripts\\FishermanController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-17T06:11:56.264Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "FishController.cs",
+              "DocumentMoniker": "D:\\Company\\PanicAtThePond\\Assets\\Scripts\\FishController.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\FishController.cs",
+              "ToolTip": "D:\\Company\\PanicAtThePond\\Assets\\Scripts\\FishController.cs",
+              "RelativeToolTip": "Assets\\Scripts\\FishController.cs",
+              "ViewState": "AgIAAEQAAAAAAAAAAAAgwFcAAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-17T06:11:53.287Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "D:\\Company\\PanicAtThePond\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{D3EF2986-CC70-9520-E1EF-C5C56B8CBD7B}|FishNet.Runtime.csproj|D:\\Company\\PanicAtThePond\\assets\\fishnet-main\\assets\\fishnet\\runtime\\managing\\logging\\levelloggingconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D3EF2986-CC70-9520-E1EF-C5C56B8CBD7B}|FishNet.Runtime.csproj|solutionrelative:assets\\fishnet-main\\assets\\fishnet\\runtime\\managing\\logging\\levelloggingconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A566AD8D-FE43-8387-CF2D-4C0ED9809916}|Assembly-CSharp.csproj|d:\\company\\panicatthepond\\assets\\scripts\\fishcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A566AD8D-FE43-8387-CF2D-4C0ED9809916}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\fishcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -13,10 +17,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{D3EF2986-CC70-9520-E1EF-C5C56B8CBD7B}|FishNet.Runtime.csproj|D:\\Company\\PanicAtThePond\\assets\\fishnet-main\\assets\\fishnet\\runtime\\managing\\networkmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D3EF2986-CC70-9520-E1EF-C5C56B8CBD7B}|FishNet.Runtime.csproj|solutionrelative:assets\\fishnet-main\\assets\\fishnet\\runtime\\managing\\networkmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D3EF2986-CC70-9520-E1EF-C5C56B8CBD7B}|FishNet.Runtime.csproj|D:\\Company\\PanicAtThePond\\assets\\fishnet-main\\assets\\fishnet\\runtime\\managing\\logging\\levelloggingconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D3EF2986-CC70-9520-E1EF-C5C56B8CBD7B}|FishNet.Runtime.csproj|solutionrelative:assets\\fishnet-main\\assets\\fishnet\\runtime\\managing\\logging\\levelloggingconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A566AD8D-FE43-8387-CF2D-4C0ED9809916}|Assembly-CSharp.csproj|D:\\Company\\PanicAtThePond\\assets\\scripts\\hostmigrationmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -90,11 +90,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 19,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "NetworkManager.cs",
               "DocumentMoniker": "D:\\Company\\PanicAtThePond\\Assets\\FishNet-main\\Assets\\FishNet\\Runtime\\Managing\\NetworkManager.cs",
               "RelativeDocumentMoniker": "Assets\\FishNet-main\\Assets\\FishNet\\Runtime\\Managing\\NetworkManager.cs",
@@ -106,7 +106,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "NetworkManager.Logging.cs",
               "DocumentMoniker": "D:\\Company\\PanicAtThePond\\Assets\\FishNet-main\\Assets\\FishNet\\Runtime\\Managing\\NetworkManager.Logging.cs",
               "RelativeDocumentMoniker": "Assets\\FishNet-main\\Assets\\FishNet\\Runtime\\Managing\\NetworkManager.Logging.cs",
@@ -130,15 +130,16 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "LevelLoggingConfiguration.cs",
               "DocumentMoniker": "D:\\Company\\PanicAtThePond\\Assets\\FishNet-main\\Assets\\FishNet\\Runtime\\Managing\\Logging\\LevelLoggingConfiguration.cs",
               "RelativeDocumentMoniker": "Assets\\FishNet-main\\Assets\\FishNet\\Runtime\\Managing\\Logging\\LevelLoggingConfiguration.cs",
               "ToolTip": "D:\\Company\\PanicAtThePond\\Assets\\FishNet-main\\Assets\\FishNet\\Runtime\\Managing\\Logging\\LevelLoggingConfiguration.cs",
               "RelativeToolTip": "Assets\\FishNet-main\\Assets\\FishNet\\Runtime\\Managing\\Logging\\LevelLoggingConfiguration.cs",
-              "ViewState": "AgIAAIYAAAAAAAAAAAAWwJMAAAA4AAAAAAAAAA==",
+              "ViewState": "AgIAAIoAAAAAAAAAAAAuwJMAAAA4AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-17T07:02:49.006Z"
+              "WhenOpened": "2025-09-17T07:02:49.006Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -322,7 +323,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "FishController.cs",
               "DocumentMoniker": "D:\\Company\\PanicAtThePond\\Assets\\Scripts\\FishController.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\FishController.cs",
